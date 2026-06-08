@@ -1,38 +1,54 @@
-import * as React from 'react';
+import * as React from "react";
 import { useEffect, useState } from "react";
-import { spfi, SPFx } from "@pnp/sp";
 
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+// Interface = Structure of form data
 interface IFormData {
-  Title: string;
+  CategoryName: string;
   IsActive: boolean;
 }
 
 export const CategoryMaster = (props: any) => {
 
-  const listName = "Category Master";
+  // SharePoint List Name
+  const listName = "OfficeCategoryMaster";
 
+  // Form State
   const [formData, setFormData] = useState<IFormData>({
-    Title: '',
+    CategoryName: "",
     IsActive: true
   });
 
+  // Array State for storing list items
   const [data, setData] = useState<any[]>([]);
+
+  // Store selected item ID for Edit
   const [itemId, setItemId] = useState<number>(0);
 
+  // Initialize PnP
   const sp = spfi().using(SPFx(props.context));
 
-  // ✅ Load Data
+  // Runs once when component loads
   useEffect(() => {
     loadData();
   }, []);
 
+  // Get all items from SharePoint List
   const loadData = async () => {
-    const res = await sp.web.lists.getByTitle(listName).items();
+    const res = await sp.web.lists
+      .getByTitle(listName)
+      .items();
+
     setData(res);
   };
 
-  // ✅ Handle Change
+  // Handle Input Changes
   const handleChange = (e: any) => {
+
     const { name, value, type, checked } = e.target;
 
     setFormData({
@@ -41,22 +57,29 @@ export const CategoryMaster = (props: any) => {
     });
   };
 
-  // ✅ Submit
+  // Save or Update
   const handleSubmit = async () => {
 
-    if (!formData.Title) {
+    if (!formData.CategoryName.trim()) {
       alert("Category Name is required");
       return;
     }
 
     if (itemId > 0) {
-      await sp.web.lists.getByTitle(listName)
+
+      // Update Existing Item
+      await sp.web.lists
+        .getByTitle(listName)
         .items.getById(itemId)
         .update(formData);
 
       alert("Updated Successfully");
+
     } else {
-      await sp.web.lists.getByTitle(listName)
+
+      // Create New Item
+      await sp.web.lists
+        .getByTitle(listName)
         .items.add(formData);
 
       alert("Saved Successfully");
@@ -66,20 +89,24 @@ export const CategoryMaster = (props: any) => {
     loadData();
   };
 
-  // ✅ Edit
+  // Edit Item
   const editItem = (item: any) => {
+
     setItemId(item.Id);
+
     setFormData({
-      Title: item.Title,
+      CategoryName: item.CategoryName,
       IsActive: item.IsActive
     });
   };
 
-  // ✅ Reset
+  // Clear Form
   const resetForm = () => {
+
     setItemId(0);
+
     setFormData({
-      Title: '',
+      CategoryName: "",
       IsActive: true
     });
   };
@@ -87,15 +114,18 @@ export const CategoryMaster = (props: any) => {
   return (
     <div style={{ padding: "20px" }}>
 
-      <h3>Category Master</h3>
+      <h2>Category Master</h2>
 
-      {/* ✅ Form */}
       <div>
-        <label>Category Name *</label><br />
+
+        <label>Category Name *</label>
+
+        <br />
+
         <input
           type="text"
-          name="Title"
-          value={formData.Title}
+          name="CategoryName"
+          value={formData.CategoryName}
           onChange={handleChange}
         />
 
@@ -114,18 +144,22 @@ export const CategoryMaster = (props: any) => {
         <br /><br />
 
         <button onClick={handleSubmit}>
-          {itemId ? "Update" : "Submit"}
+          {itemId > 0 ? "Update" : "Submit"}
         </button>
 
-        <button onClick={resetForm} style={{ marginLeft: "10px" }}>
-          Cancel
+        <button
+          onClick={resetForm}
+          style={{ marginLeft: "10px" }}
+        >
+          Clear
         </button>
+
       </div>
 
       <hr />
 
-      {/* ✅ Table */}
       <table border={1} cellPadding={10}>
+
         <thead>
           <tr>
             <th>ID</th>
@@ -136,20 +170,37 @@ export const CategoryMaster = (props: any) => {
         </thead>
 
         <tbody>
+
           {data.map((item: any) => (
+
             <tr key={item.Id}>
+
               <td>{item.Id}</td>
-              <td>{item.Title}</td>
-              <td>{item.IsActive ? "Yes" : "No"}</td>
+
+              <td>{item.CategoryName}</td>
+
               <td>
-                <button onClick={() => editItem(item)}>Edit</button>
+                {item.IsActive ? "Yes" : "No"}
               </td>
+
+              <td>
+                <button
+                  onClick={() => editItem(item)}
+                >
+                  Edit
+                </button>
+              </td>
+
             </tr>
+
           ))}
+
         </tbody>
+
       </table>
 
     </div>
   );
 };
-``
+
+-----------------------Category Form ------------------
