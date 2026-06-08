@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "inventory-pm-client-side-solution",
+    "id": "1d6d9403-8b44-4616-b9cb-1c414bbbadcf",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.21.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "InventoryPM description"
+      },
+      "longDescription": {
+        "default": "InventoryPM description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "inventory-pm Feature",
+        "description": "The feature that activates elements of the inventory-pm solution.",
+        "id": "ae213cf2-e94e-4852-88ea-5f41b6330c11",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/inventory-pm.sppkg"
+  }
+}
