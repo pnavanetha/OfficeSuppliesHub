@@ -14,9 +14,8 @@ const NavigationBar: React.FC = () => {
         Dashboard
       </Link>
 
-      <Link to="/category-master">
-        Category Master
-      </Link>
+      <Link to="/category-master">Category Master</Link>
+      <Link to="/department-master">Department Master</Link>
     </div>
   );
 };
