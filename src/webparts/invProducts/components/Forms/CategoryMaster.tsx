@@ -105,33 +105,17 @@ export const CategoryMaster = (props: any) => {
                 <label>Category Name *</label>
                 <br />
 
-                <input
-                    type="text"
-                    name="CategoryName"
-                    value={formData.CategoryName}
-                    onChange={handleChange}
-                />
-
-                <br />
-                <br />
-
+                <input type="text" name="CategoryName" value={formData.CategoryName} onChange={handleChange} />
+                <br /><br />
                 <label>
-                    <input
-                        type="checkbox"
-                        name="IsActive"
-                        checked={formData.IsActive}
-                        onChange={handleChange}
-                    />
+                    <input type="checkbox" name="IsActive" checked={formData.IsActive} onChange={handleChange} />
                     Is Active
                 </label>
-
-                <br />
-                <br />
-
+                <br /><br />
                 <button onClick={handleSubmit}>
                     {itemId > 0 ? "Update" : "Submit"}
                 </button>
-
+                
                 <button
                     onClick={resetForm}
                     style={{ marginLeft: "10px" }}

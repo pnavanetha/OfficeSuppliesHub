@@ -5,6 +5,7 @@ import Dashboard from '../Forms/Dashboard';
 import CategoryMaster from '../Forms/CategoryMaster';
 import NavigationBar from '../Navigation/NavigationBar';
 import DeparmentMaster from '../Forms/DepartmentMaster';
+import ItemMaster from '../Forms/ItemMaster';
 
 interface IRoutesProps {
   context: any;
@@ -23,6 +24,8 @@ const RoutesItems: React.FC<IRoutesProps> = ({ context }) => {
           element={<CategoryMaster context={context} />}
         />
         <Route path="/department-master" element={<DeparmentMaster context={context}/>}
+        />
+        <Route path="/item-master" element={<ItemMaster context={context} />}
         />
 
       </Routes>
