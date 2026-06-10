@@ -47,27 +47,11 @@ const SupplyRequestForm = (props: any) => {
       setCurrentUser(user.Title);
       setCurrentUserId(user.Id);
 
-      const [departments, categories, items] =
-        await Promise.all([
-
-          sp.web.lists
-            .getByTitle("OfficeDepartments")
-            .items(),
-
-          sp.web.lists
-            .getByTitle("OfficeCategoryMaster")
-            .items(),
-
-          sp.web.lists
-            .getByTitle("OfficeItemMaster")
-            .items
-            .select(
-              "Id",
-              "ItemName",
-              "CategoryNameId"
-            )()
+      const [departments, categories, items] = await Promise.all([
+          sp.web.lists.getByTitle("OfficeDepartments").items(),
+          sp.web.lists.getByTitle("OfficeCategoryMaster").items(),
+          sp.web.lists.getByTitle("OfficeItemMaster").items.select("Id", "ItemName", "CategoryNameId" )()
         ]);
-
       setDepartmentData(departments);
       setCategoryData(categories);
       setItemData(items);
@@ -127,19 +111,12 @@ const SupplyRequestForm = (props: any) => {
         .getByTitle("OfficeSupplyRequestList")
         .items
         .add({
-
           EmployeeNameId: currentUserId,
-
           DepartmentId: Number(formData.DepartmentId),
-
           CategoryNameId: Number(formData.CategoryNameId),
-
           ItemNameId: Number(formData.ItemNameId),
-
           RequestDate: formData.RequestDate,
-
           Comments: formData.Comments,
-
           Status: "Pending"
         });
 

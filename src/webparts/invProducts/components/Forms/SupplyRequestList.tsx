@@ -22,26 +22,8 @@ const SupplyRequestList = (props: any) => {
 
         try {
 
-            const res = await sp.web.lists
-                .getByTitle("OfficeSupplyRequestList")
-                .items
-                .select(
-                    "Id",
-                    "RequestDate",
-                    "Comments",
-                    "Status",
-                    "EmployeeName/Title",
-                    "Department/Title",
-                    "CategoryName/Title",
-                    "ItemName/Title"
-                )
-                .expand(
-                    "EmployeeName",
-                    "Department",
-                    "CategoryName",
-                    "ItemName"
-                )();
-
+            const res = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Title", "CategoryName/Title", "ItemName/Title")
+                .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
             setData(res);
 
         } catch (error) {
@@ -49,18 +31,11 @@ const SupplyRequestList = (props: any) => {
         }
     };
 
-    const addRequest = () => {
-
-        navigate("/SupplyRequestForm");
+    const addRequest = () => {navigate("/SupplyRequestForm");
     };
-
-    const editRequest = (id: number) => {
-
-        navigate(`/SupplyRequestForm/${id}`);
+    const editRequest = (id: number) => {navigate(`/SupplyRequestForm/${id}`);
     };
-
     const deleteRequest = async (id: number) => {
-
         const confirmDelete = window.confirm(
             "Are you sure you want to delete this request?"
         );
@@ -71,14 +46,8 @@ const SupplyRequestList = (props: any) => {
 
         try {
 
-            await sp.web.lists
-                .getByTitle("OfficeSupplyRequestList")
-                .items
-                .getById(id)
-                .delete();
-
+            await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.getById(id).delete();
             alert("Deleted Successfully");
-
             loadData();
 
         } catch (error) {
@@ -133,63 +102,24 @@ const SupplyRequestList = (props: any) => {
                             data.map((item: any) => (
 
                                 <tr key={item.Id}>
-
                                     <td>{item.Id}</td>
-
+                                    <td>{item.EmployeeName?.Title}</td>                                  
+                                    <td>{item.Department?.Title}</td>
+                                    <td>{item.CategoryName?.Title}</td>
+                                    <td>{item.ItemName?.Title}</td>
+                                    <td>{item.RequestDate}</td>
+                                    <td>{item.Comments}</td>
+                                    <td>{item.Status}</td>
                                     <td>
-                                        {item.EmployeeName?.Title}
+                                        <button onClick={() => editRequest(item.Id)}>Edit</button>
                                     </td>
-
                                     <td>
-                                        {item.Department?.Title}
+                                        <button onClick={() => deleteRequest(item.Id)}>Delete</button>
                                     </td>
-
-                                    <td>
-                                        {item.CategoryName?.Title}
-                                    </td>
-
-                                    <td>
-                                        {item.ItemName?.Title}
-                                    </td>
-
-                                    <td>
-                                        {item.RequestDate}
-                                    </td>
-
-                                    <td>
-                                        {item.Comments}
-                                    </td>
-
-                                    <td>
-                                        {item.Status}
-                                    </td>
-
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                editRequest(item.Id)
-                                            }
-                                        >
-                                            Edit
-                                        </button>
-                                    </td>
-
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                deleteRequest(item.Id)
-                                            }
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-
                                 </tr>
 
                             ))
-
                             :
-
                             <tr>
                                 <td
                                     colSpan={10}
