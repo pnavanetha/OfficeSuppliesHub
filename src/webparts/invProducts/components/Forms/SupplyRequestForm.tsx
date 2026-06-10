@@ -54,7 +54,6 @@ const SupplyRequestForm = (props: any) => {
       loadEditData(Number(id));
     }
   }, [id, itemData]);
-  
   useEffect(() => {
   console.log("ROLE:", role, "STATUS:", status);
 }, [role, status]);

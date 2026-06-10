@@ -17,7 +17,7 @@ const NavigationBar: React.FC<INavigationBarProps> = ({ role }) => {
       <Link to="/" style={{ marginRight: "20px" }}>
         Dashboard
       </Link>
-      <Link to="/SupplyRequestList">Supply Request List</Link>
+      <Link to="/supply-request-list">Supply Request List</Link>
 
       {role === "Admin" && (
         <>
