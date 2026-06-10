@@ -1,42 +1,59 @@
 import * as React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-import Dashboard from '../Forms/Dashboard';
+import AdminDashboard from '../Forms/AdminDashboard';
+import StaffDashboard from '../Forms/StaffDashboard';
 import CategoryMaster from '../Forms/CategoryMaster';
 import NavigationBar from '../Navigation/NavigationBar';
 import DeparmentMaster from '../Forms/DepartmentMaster';
 import ItemMaster from '../Forms/ItemMaster';
 import SupplyRequestList from '../Forms/SupplyRequestList';
 import SupplyRequestForm from '../Forms/SupplyRequestForm';
+import AllRequest from '../Forms/AllRequests';
+import PendingRequest from '../Forms/PendingRequest';
+import MyRequest from '../Forms/MyRequests';
 
 interface IRoutesProps {
   context: any;
+  role: 'Admin' | 'Staff';
 }
 
-const RoutesItems: React.FC<IRoutesProps> = ({ context }) => {
+const RoutesItems: React.FC<IRoutesProps> = ({ role, context }) => {
   return (
     <>
-      <NavigationBar />
+      <NavigationBar role={role} />
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+
+        <Route path="/" element={role === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
+
+        <Route path="/supply-request-list" element={<SupplyRequestList context={context} role={role} />} />
+        <Route
+          path="/SupplyRequestForm"
+          element={<SupplyRequestForm context={context} role={role} />}
+        />
 
         <Route
-          path="/category-master"
-          element={<CategoryMaster context={context} />}
+          path="/SupplyRequestForm/:id"
+          element={<SupplyRequestForm context={context} role={role} />}
         />
-        <Route path="/department-master" element={<DeparmentMaster context={context}/>}/>
-        
-        <Route path="/item-master" element={<ItemMaster context={context} />}/>
-        
-        <Route path="/SupplyRequestList" element={<SupplyRequestList context={context}/>}/>
-        <Route path="/SupplyRequestForm" element={<SupplyRequestForm context={context} />} />  
 
- 
-    
+        <Route path="/myrequest" element={<MyRequest context={context} role={role}  />}/>
 
+
+        {role === 'Admin' && (
+          <>
+            <Route path="/category-master" element={<CategoryMaster context={context} />} />
+            <Route path="/department-master" element={<DeparmentMaster context={context} />} />
+            <Route path="/item-master" element={<ItemMaster context={context} />} />
+            <Route path="/pendingrequest" element={<PendingRequest context={context} />} />
+            <Route path="/allrequest" element={<AllRequest context={context} />} />
+          </>
+        )}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );
 };
+
 export default RoutesItems;

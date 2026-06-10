@@ -1,7 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-const NavigationBar: React.FC = () => {
+interface INavigationBarProps {
+  role: "Admin" | "Staff";
+}
+
+const NavigationBar: React.FC<INavigationBarProps> = ({ role }) => {
   return (
     <div
       style={{
@@ -13,12 +17,17 @@ const NavigationBar: React.FC = () => {
       <Link to="/" style={{ marginRight: "20px" }}>
         Dashboard
       </Link>
-
-      <Link to="/category-master">Category Master</Link>
-      <Link to="/department-master">Department Master</Link>
-      <Link to="/item-master">Item Master</Link>
       <Link to="/SupplyRequestList">Supply Request List</Link>
+
+      {role === "Admin" && (
+        <>
+          <Link to="/category-master">Category Master</Link>
+          <Link to="/department-master">Department Master</Link>
+          <Link to="/item-master">Item Master</Link>
+        </>
+      )}
     </div>
+
   );
 };
 

@@ -8,6 +8,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 const SupplyRequestList = (props: any) => {
+    
 
     const sp = spfi().using(SPFx(props.context));
     const navigate = useNavigate();
@@ -21,8 +22,7 @@ const SupplyRequestList = (props: any) => {
     const loadData = async () => {
 
         try {
-
-            const res = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Title", "CategoryName/Title", "ItemName/Title")
+            const res = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName")
                 .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
             setData(res);
 
@@ -33,7 +33,7 @@ const SupplyRequestList = (props: any) => {
 
     const addRequest = () => {navigate("/SupplyRequestForm");
     };
-    const editRequest = (id: number) => {navigate(`/SupplyRequestForm/${id}`);
+    const editRequest = (id: number): void => {navigate(`/SupplyRequestForm/${id}`);
     };
     const deleteRequest = async (id: number) => {
         const confirmDelete = window.confirm(
@@ -76,8 +76,7 @@ const SupplyRequestList = (props: any) => {
                 style={{
                     width: "100%",
                     borderCollapse: "collapse"
-                }}
-                
+                }}                
             >
                 <thead>
                     <tr>
@@ -104,9 +103,9 @@ const SupplyRequestList = (props: any) => {
                                 <tr key={item.Id}>
                                     <td>{item.Id}</td>
                                     <td>{item.EmployeeName?.Title}</td>                                  
-                                    <td>{item.Department?.Title}</td>
-                                    <td>{item.CategoryName?.Title}</td>
-                                    <td>{item.ItemName?.Title}</td>
+                                    <td>{item.Department?.Name}</td>
+                                    <td>{item.CategoryName?.CategoryName}</td>
+                                    <td>{item.ItemName?.ItemName}</td>
                                     <td>{item.RequestDate}</td>
                                     <td>{item.Comments}</td>
                                     <td>{item.Status}</td>

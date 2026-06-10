@@ -37,7 +37,7 @@ export const ItemMaster = (props: any) => {
             // const res = await sp.web.lists.getByTitle(listName).items.select("Id","ItemName","IsActive","CategoryName/Title").expand("CategoryName")();
 
             const [res, categoryData] = await Promise.all([
-                sp.web.lists.getByTitle(listName).items.select("Id", "ItemName", "IsActive", "CategoryNameId","CategoryName/Title").expand("CategoryName")(),
+                sp.web.lists.getByTitle(listName).items.select("Id", "ItemName", "IsActive", "CategoryNameId","CategoryName/CategoryName").expand("CategoryName")(),
                 sp.web.lists.getByTitle("OfficeCategoryMaster").items.select("*")(),
             ]);
 
@@ -186,7 +186,7 @@ export const ItemMaster = (props: any) => {
                     {data.map((item: any) => (
                         <tr key={item.Id}>
                             <td>{item.Id}</td>
-                            <td>{item.CategoryName?.Title}</td>
+                            <td>{item.CategoryName?.CategoryName}</td>
                             {/* <td>{item.CategoryNameId?.CategoryNameId}</td>     */}
                             <td>{item.ItemName}</td>
 

@@ -1,17 +1,48 @@
 import * as React from 'react';
 import type { IInvProductsProps } from './IInvProductsProps';
-
 import { HashRouter } from 'react-router-dom';
-
 import RoutesItems from './Navigation/Routes';
+import { SPHttpClient } from '@microsoft/sp-http';
 
+interface IState {
+  role: 'Admin' | 'Staff' | null;
+}
 
-export default class InvProducts extends React.Component<IInvProductsProps> {
+export default class InvProducts extends React.Component<IInvProductsProps, IState> {
+
+  constructor(props: IInvProductsProps) {
+    super(props);
+    this.state = { role: null };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    const isAdmin = await this.isUserInGroup('Inventory Admin');
+
+    if (isAdmin) {
+      this.setState({ role: 'Admin' });
+    } else {
+      this.setState({ role: 'Staff' });
+    }
+  }
+
+  private async isUserInGroup(groupName: string): Promise<boolean> {
+    const response = await this.props.context.spHttpClient.get(
+      `${this.props.context.pageContext.web.absoluteUrl}/_api/web/currentuser/groups`,
+      SPHttpClient.configurations.v1
+    );
+
+    const data = await response.json();
+    return data.value.some((g: any) => g.Title === groupName);
+  }
 
   public render(): React.ReactElement<IInvProductsProps> {
+    if (!this.state.role) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <HashRouter>
-        <RoutesItems context={this.props.context} />
+        <RoutesItems context={this.props.context} role={this.state.role} />
       </HashRouter>
     );
   }
