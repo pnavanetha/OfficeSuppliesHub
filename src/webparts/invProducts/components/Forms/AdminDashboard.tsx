@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 
 const AdminDashboard = (props: any) => {
 
-  const [tableHeaders, setTableHeaders] = useState([]);
-  const [tableData, setTableData] = useState([]);
+  const [tableHeaders, setTableHeaders] = useState<string[]>([]);
+  const [tableData, setTableData] = useState<any[]>([]);
+  
 
   const sp = spfi().using(SPFx(props.context));
 
@@ -14,40 +15,88 @@ const AdminDashboard = (props: any) => {
     loadData("All");
   }, []);
 
+  // const loadData = async (action: string) => {
+  //   try {
+  //     const tableHeaders: any = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
+  //     setTableHeaders(tableHeaders);
+  //     let filterQuery = '';
+  //     if (action == "Pending") {
+  //       filterQuery = "Status eq 'Submitted'";
+  //     }
+  //     else if (action == "My") {
+  //       filterQuery = `Author/Id eq ${props.context.pageContext.legacyPageContext.userId}`;
+  //     }
+  //     const res: any = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.filter(filterQuery).select("Id","RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName").expand("EmployeeName", "Department", "CategoryName", "ItemName")();
+  //     const tableData = res.map((item: any) => {
+  //       return ({
+  //         "ID": item.Id,
+  //         "Employee": item.Employee,
+  //         "Department": item.Department,
+  //         "Category": item.Category,
+  //         "Item": item.Item,
+  //         "Request": item.Request,
+  //         "Comments": item.Comments,
+  //         "Status": item.Status,
+  //         "Edit": item.Edit
+  //       })
+  //     });
+  //     setTableData(tableData);
+  //     console.log(tableData);
+
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const loadData = async (action: string) => {
     try {
-      const tableHeaders: any = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
-      setTableHeaders(tableHeaders);
+      const headers = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
+      setTableHeaders(headers);
+
       let filterQuery = '';
-      if (action == "Pending") {
+
+      if (action === "Pending") {
         filterQuery = "Status eq 'Submitted'";
-      }
-      else if (action == "My") {
+      } else if (action === "My") {
         filterQuery = `Author/Id eq ${props.context.pageContext.legacyPageContext.userId}`;
       }
-      const res: any = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.filter(filterQuery).select("EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName", "*").expand("EmployeeName", "Department", "CategoryName", "ItemName")();
-      const tableData = res.map((item: any) => {
-        return ({
-          "ID": item.Id,
-          "Employee": item.Employee,
-          "Department": item.Department,
-          "Category": item.Category,
-          "Item": item.Item,
-          "Request": item.Request,
-          "Comments": item.Comments,
-          "Status": item.Status,
-          "Edit": item.Edit
-        })
-      });
-      setTableData(tableData);
-      console.log(tableData);
 
+      let items = sp.web.lists.getByTitle("OfficeSupplyRequestList").items;
+
+      if (filterQuery) {
+        items = items.filter(filterQuery);
+      }
+
+      const res: any = await items
+        .select(
+          "EmployeeName/Title",
+          "Department/Name",
+          "CategoryName/CategoryName",
+          "ItemName/ItemName",
+          "*"
+        )
+        .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
+
+      console.log(res);
+
+      const data = res.map((item: any) => ({
+        ID: item.Id,
+        Employee: item.EmployeeName?.Title,
+        Department: item.Department?.Name,
+        Category: item.CategoryName?.CategoryName,
+        Item: item.ItemName?.ItemName,
+        Request: item.Request,
+        Comments: item.Comments,
+        Status: item.Status,
+        Edit: "Edit"
+      }));
+
+      setTableData(data);
 
     } catch (error) {
-      console.log(error);
+      console.error("Error loading data:", error);
     }
   };
-
   return (
     <div style={{ padding: "20px" }}>
       <h2>Admin Dashboard</h2>
