@@ -17,10 +17,7 @@ interface IRequestData {
 }
 
 const SupplyRequestForm = (props: any) => {
-
-  const { role } = props;
-
-  
+  const { role } = props;  
   
   const sp = spfi().using(SPFx(props.context));
   const { id } = useParams();
@@ -54,9 +51,10 @@ const SupplyRequestForm = (props: any) => {
       loadEditData(Number(id));
     }
   }, [id, itemData]);
-  useEffect(() => {
-  console.log("ROLE:", role, "STATUS:", status);
-}, [role, status]);
+  
+//   useEffect(() => {
+//   console.log("ROLE:", role, "STATUS:", status);
+// }, [role, status]);
   
 
   const loadData = async () => {
@@ -86,14 +84,7 @@ const SupplyRequestForm = (props: any) => {
       const item = await sp.web.lists
         .getByTitle("OfficeSupplyRequestList")
         .items.getById(itemId)
-        .select(
-          "DepartmentId",
-          "CategoryNameId",
-          "ItemNameId",
-          "RequestDate",
-          "Comments",
-          "Status"
-        )();
+        .select("DepartmentId", "CategoryNameId", "ItemNameId", "RequestDate", "Comments", "Status")();
 
       setFormData({
         DepartmentId: item.DepartmentId,
@@ -165,15 +156,7 @@ const SupplyRequestForm = (props: any) => {
       } else {
         await sp.web.lists
           .getByTitle("OfficeSupplyRequestList")
-          .items.add({
-            EmployeeNameId: currentUserId,
-            DepartmentId: Number(formData.DepartmentId),
-            CategoryNameId: Number(formData.CategoryNameId),
-            ItemNameId: Number(formData.ItemNameId),
-            RequestDate: formData.RequestDate,
-            Comments: formData.Comments,
-            Status: newStatus
-          });
+          .items.add({EmployeeNameId: currentUserId, DepartmentId: Number(formData.DepartmentId), CategoryNameId: Number(formData.CategoryNameId),ItemNameId: Number(formData.ItemNameId),RequestDate: formData.RequestDate, Comments: formData.Comments, Status: newStatus});
 
         alert("Saved Successfully");
       }
@@ -187,11 +170,7 @@ const SupplyRequestForm = (props: any) => {
 
   const handleApproveReject = async (newStatus: string) => {
     try {
-      await sp.web.lists
-        .getByTitle("OfficeSupplyRequestList")
-        .items.getById(Number(id))
-        .update({ Status: newStatus });
-      
+      await sp.web.lists .getByTitle("OfficeSupplyRequestList") .items.getById(Number(id)).update({ Status: newStatus });      
       alert(`Request ${newStatus}`);
       navigate("/supply-request-list");
 
@@ -248,7 +227,7 @@ const SupplyRequestForm = (props: any) => {
         onChange={handleChange}
       /><br /><br />
 
-      {/* ✅ Draft */}
+  
       {status === "Draft" && (
         <>
           <button onClick={() => handleSave("Draft")}>Save</button>
@@ -262,14 +241,13 @@ const SupplyRequestForm = (props: any) => {
         </>
       )}
 
-      {/* ✅ Submitted - Staff */}
+   
       {status === "Submitted" && role === "Staff" && (
         <button onClick={() => handleSave("Submitted")}>
           Update
         </button>
       )}
 
-      {/* ✅ Submitted - Admin */}
       {status === "Submitted" && role === "Admin" && (
         <>
           <button onClick={() => handleApproveReject("Approved")}>
@@ -285,14 +263,14 @@ const SupplyRequestForm = (props: any) => {
         </>
       )}
 
-      {/* ✅ Rejected */}
+
       {status === "Rejected" && (
         <button onClick={() => handleSave("Submitted")}>
           Resubmit
         </button>
       )}
 
-      {/* ✅ Cancel */}
+   
       <button onClick={handleCancel} style={{ marginLeft: "10px" }}>
         Cancel
       </button>

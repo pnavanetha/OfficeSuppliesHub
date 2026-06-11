@@ -20,18 +20,8 @@ const AllRequest = (props: any) => {
             const res = await sp.web.lists
                 .getByTitle("OfficeSupplyRequestList")
                 .items
-                .select(
-                    "Id",
-                    "RequestDate",
-                    "Comments",
-                    "Status",
-                    "EmployeeName/Title",
-                    "Department/Name",
-                    "CategoryName/CategoryName",
-                    "ItemName/ItemName"
-                )
+                .select("Id","RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName" )
                 .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
-
             setData(res);
 
         } catch (error) {
@@ -74,7 +64,6 @@ const AllRequest = (props: any) => {
                                 <td>{item.Comments}</td>
                                 <td>{item.Status}</td>
 
-                                {/* ✅ Edit only */}
                                 <td>
                                     <button onClick={() => editRequest(item.Id)}>
                                         Edit

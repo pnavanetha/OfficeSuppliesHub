@@ -31,7 +31,7 @@ const PendingRequest = (props: any) => {
           "ItemName/ItemName"
         )
         .expand("EmployeeName", "Department", "CategoryName", "ItemName")
-        .filter("Status eq 'Submitted'") // ✅ Only Submitted
+        .filter("Status eq 'Submitted'") 
         ();
 
       setData(res);
@@ -61,7 +61,7 @@ const PendingRequest = (props: any) => {
             <th>Request Date</th>
             <th>Comments</th>
             <th>Status</th>
-            <th>Edit</th> {/* ✅ Only Edit */}
+            <th>Edit</th> 
           </tr>
         </thead>
 
@@ -78,7 +78,7 @@ const PendingRequest = (props: any) => {
                 <td>{item.Comments}</td>
                 <td>{item.Status}</td>
 
-                {/* ✅ ONLY EDIT BUTTON */}
+                
                 <td>
                   <button onClick={() => editRequest(item.Id)}>
                     Edit

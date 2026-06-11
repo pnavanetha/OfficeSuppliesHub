@@ -23,22 +23,10 @@ const MyRequest = (props: any) => {
 
       const userEmail = props.context.pageContext.user.email;
 
-      const res = await sp.web.lists
-        .getByTitle("OfficeSupplyRequestList")
-        .items
-        .select(
-          "Id",
-          "RequestDate",
-          "Comments",
-          "Status",
-          "EmployeeName/Title",
-          "EmployeeName/EMail",
-          "Department/Name",
-          "CategoryName/CategoryName",
-          "ItemName/ItemName"
-        )
+      const res = await sp.web.lists .getByTitle("OfficeSupplyRequestList") .items
+        .select("Id","RequestDate", "Comments", "Status", "EmployeeName/Title", "EmployeeName/EMail", "Department/Name", "CategoryName/CategoryName","ItemName/ItemName")
         .expand("EmployeeName", "Department", "CategoryName", "ItemName")
-        .filter(`EmployeeName/EMail eq '${userEmail}'`) // ✅ KEY FILTER
+        .filter(`EmployeeName/EMail eq '${userEmail}'`) 
         ();
 
       setData(res);
@@ -48,8 +36,7 @@ const MyRequest = (props: any) => {
     }
   };
 
-  // ✅ Navigate to Edit Form
-  const editRequest = (id: number): void => {navigate(`/SupplyRequestForm/${id}`);
+   const editRequest = (id: number): void => {navigate(`/SupplyRequestForm/${id}`);
   };
 
   return (
@@ -74,7 +61,7 @@ const MyRequest = (props: any) => {
             <th>Request Date</th>
             <th>Comments</th>
             <th>Status</th>
-            <th>Edit</th> {/* ✅ Only Edit */}
+            <th>Edit</th> 
           </tr>
         </thead>
 
@@ -91,7 +78,6 @@ const MyRequest = (props: any) => {
                 <td>{item.Comments}</td>
                 <td>{item.Status}</td>
 
-                {/* ✅ ONLY EDIT BUTTON */}
                 <td>
                   <button onClick={() => editRequest(item.Id)}>
                     Edit
