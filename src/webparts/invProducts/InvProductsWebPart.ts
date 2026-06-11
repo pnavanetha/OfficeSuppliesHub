@@ -12,6 +12,7 @@ import * as strings from 'InvProductsWebPartStrings';
 import InvProducts from './components/InvProducts';
 import { IInvProductsProps } from './components/IInvProductsProps';
 
+
 export interface IInvProductsWebPartProps {
   description: string;
 }

@@ -1,9 +1,52 @@
+import { SPFx, spfi } from "@pnp/sp";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const AdminDashboard = () => {
 
-  const navigate = useNavigate();
+const AdminDashboard = (props: any) => {
+
+  const [tableHeaders, setTableHeaders] = useState([]);
+  const [tableData, setTableData] = useState([]);
+
+  const sp = spfi().using(SPFx(props.context));
+
+  useEffect(() => {
+    loadData("All");
+  }, []);
+
+  const loadData = async (action: string) => {
+    try {
+      const tableHeaders: any = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
+      setTableHeaders(tableHeaders);
+      let filterQuery = '';
+      if (action == "Pending") {
+        filterQuery = "Status eq 'Submitted'";
+      }
+      else if (action == "My") {
+        filterQuery = `Author/Id eq ${props.context.pageContext.legacyPageContext.userId}`;
+      }
+      const res: any = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.filter(filterQuery).select("EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName", "*").expand("EmployeeName", "Department", "CategoryName", "ItemName")();
+      const tableData = res.map((item: any) => {
+        return ({
+          "ID": item.Id,
+          "Employee": item.Employee,
+          "Department": item.Department,
+          "Category": item.Category,
+          "Item": item.Item,
+          "Request": item.Request,
+          "Comments": item.Comments,
+          "Status": item.Status,
+          "Edit": item.Edit
+        })
+      });
+      setTableData(tableData);
+      console.log(tableData);
+
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -11,28 +54,55 @@ const AdminDashboard = () => {
 
       <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
 
-        <div
-          style={cardStyle}
-          onClick={() => navigate("/all-requests")}
-        >
+        <div style={cardStyle} onClick={() => loadData("All")} >
           All Requests
         </div>
 
-        <div
-          style={cardStyle}
-          onClick={() => navigate("/pending-requests")}
-        >
+        <div style={cardStyle} onClick={() => loadData("Pending")}>
           Pending Requests
         </div>
 
-        <div
-          style={cardStyle}
-          onClick={() => navigate("/my-requests")}
-        >
+        <div style={cardStyle} onClick={() => loadData("My")}>
           My Requests
         </div>
 
       </div>
+
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            {
+              tableHeaders.map((header) => {
+                return (
+                  <th>{header}</th>
+                )
+              })
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          {tableData.length > 0 ? (
+            tableData.map((item: any) => {
+              return (
+                <tr>
+                  {Object.keys(item).map((field: any) => {
+                    return (
+                      <td>{item[field]}</td>
+                    )
+                  })}
+                </tr>
+              )
+            })
+          ) : (
+            <tr>
+              <td colSpan={9} style={{ textAlign: "center" }}>
+                No Records Found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

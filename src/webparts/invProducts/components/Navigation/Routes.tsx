@@ -1,3 +1,5 @@
+// 
+
 import * as React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
@@ -24,7 +26,7 @@ const RoutesItems: React.FC<IRoutesProps> = ({ role, context }) => {
       <NavigationBar role={role} />
 
       <Routes>
-        <Route path="/" element={role === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
+        <Route path="/" element={role === 'Admin' ? <AdminDashboard  context={context}/> : <StaffDashboard />} />
         <Route path="/supply-request-list" element={<SupplyRequestList context={context} role={role} />} />
         <Route path="/SupplyRequestForm" element={<SupplyRequestForm context={context} role={role} />} />    
         <Route path="/SupplyRequestForm/:id" element={<SupplyRequestForm context={context} role={role} />} />

@@ -18,18 +18,7 @@ const PendingRequest = (props: any) => {
     try {
 
       const res = await sp.web.lists
-        .getByTitle("OfficeSupplyRequestList")
-        .items
-        .select(
-          "Id",
-          "RequestDate",
-          "Comments",
-          "Status",
-          "EmployeeName/Title",
-          "Department/Name",
-          "CategoryName/CategoryName",
-          "ItemName/ItemName"
-        )
+        .getByTitle("OfficeSupplyRequestList").items.select("Id","RequestDate", "Comments", "Status","EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName" )
         .expand("EmployeeName", "Department", "CategoryName", "ItemName")
         .filter("Status eq 'Submitted'") 
         ();

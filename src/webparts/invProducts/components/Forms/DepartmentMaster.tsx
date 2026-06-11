@@ -31,10 +31,7 @@ export const DeparmentMaster = (props: any) => {
 
     const loadData = async () => {
         try {
-            const res = await sp.web.lists
-                .getByTitle(listName)
-                .items();
-
+            const res = await sp.web.lists .getByTitle(listName) .items();
             setData(res);
         } catch (error) {
             console.log(error);
@@ -57,18 +54,10 @@ export const DeparmentMaster = (props: any) => {
         }
 
         try {
-            if (itemId > 0) {
-                await sp.web.lists
-                    .getByTitle(listName)
-                    .items.getById(itemId)
-                    .update(formData);
-
+            if (itemId > 0) {await sp.web.lists .getByTitle(listName).items.getById(itemId).update(formData);
                 alert("Updated Successfully");
             } else {
-                await sp.web.lists
-                    .getByTitle(listName)
-                    .items.add(formData);
-
+                await sp.web.lists.getByTitle(listName).items.add(formData);
                 alert("Saved Successfully");
             }
 
