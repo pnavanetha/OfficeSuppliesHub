@@ -1,12 +1,14 @@
 import { SPFx, spfi } from "@pnp/sp";
 import * as React from "react";
 import { useEffect, useState } from "react";
+import "../Navigation/NavigationBar";
+
 
 
 const AdminDashboard = (props: any) => {
 
-  const [tableHeaders, setTableHeaders] = useState<any[]>([]);
-  const [tableData, setTableData] = useState<any[]>([]);
+  const [tableHeaders, setTableHeaders] = useState<string[]>([]);
+  const [tableData, setTableData] = useState<string[]>([]);
   
 
   const sp = spfi().using(SPFx(props.context));
@@ -15,7 +17,7 @@ const AdminDashboard = (props: any) => {
     loadData("All");
   }, []);
 
-  const loadData = async (action: any) => {
+  const loadData = async (action: string) => {
     try {
       const headers = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
       setTableHeaders(headers);
