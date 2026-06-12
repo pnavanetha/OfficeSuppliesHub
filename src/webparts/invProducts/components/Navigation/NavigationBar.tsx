@@ -1,5 +1,14 @@
 // import * as React from "react";
 // import { Link } from "react-router-dom";
+// import {
+//   FaTachometerAlt,
+//   FaClipboardList,
+//   FaFolder,
+//   FaBuilding,
+//   FaBox
+// } from "react-icons/fa";
+
+// import "../CSS/navigationBar.css";
 
 // interface INavigationBarProps {
 //   role: "Admin" | "Staff";
@@ -7,33 +16,73 @@
 
 // const NavigationBar: React.FC<INavigationBarProps> = ({ role }) => {
 //   return (
-//     <div
-//       style={{
-//         padding: "10px",
-//         backgroundColor: "#f3f3f3",
-//         marginBottom: "20px"
-//       }}
-//     >
-//       <Link to="/" style={{ marginRight: "20px" }}>
-//         Dashboard
-//       </Link>
-//       <Link to="/supply-request-list">Supply Request List</Link>
+//     <div className="sidebar">
+//       <div className="logo">
+//         <h2>Office Hub</h2>
+//       </div>
 
-//       {role === "Admin" && (
-//         <>
-//           <Link to="/category-master">Category Master</Link>
-//           <Link to="/department-master">Department Master</Link>
-//           <Link to="/item-master">Item Master</Link>
-//         </>
-//       )}
+//       <ul className="menu">
+//         <li>
+//           <Link to="/">
+//             <FaTachometerAlt className="icon" />
+//             Dashboard
+//           </Link>
+//         </li>
+
+//         <li>
+//           <Link to="/supply-request-list">
+//             <FaClipboardList className="icon" />
+//             Supply Requests
+//           </Link>
+//         </li>
+
+//         {role === "Admin" && (
+//           <>
+//             <li>
+//               <Link to="/category-master">
+//                 <FaFolder className="icon" />
+//                 Category Master
+//               </Link>
+//             </li>
+
+//             <li>
+//               <Link to="/department-master">
+//                 <FaBuilding className="icon" />
+//                 Department Master
+//               </Link>
+//             </li>
+
+//             <li>
+//               <Link to="/item-master">
+//                 <FaBox className="icon" />
+//                 Item Master
+//               </Link>
+//             </li>
+//           </>
+//         )}
+//       </ul>
 //     </div>
-
 //   );
 // };
 
 // export default NavigationBar;
+
 import * as React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiHome,
+  FiClipboard,
+  FiFolder,
+  FiBox,
+  FiGrid
+} from "react-icons/fi";
+
+import { FaBuilding } from "react-icons/fa";
+
 import "../CSS/navigationBar.css";
 
 interface INavigationBarProps {
@@ -41,36 +90,69 @@ interface INavigationBarProps {
 }
 
 const NavigationBar: React.FC<INavigationBarProps> = ({ role }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
+      
+      <button
+        className="toggle-btn"
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        {collapsed ? <FiChevronRight /> : <FiChevronLeft />}
+      </button>
+
       <div className="logo">
-        <h2>Office Hub</h2>
+        <FiGrid className="logo-icon" />
+
+        {!collapsed && (
+          <div>
+            <h2>Office Hub</h2>
+          </div>
+        )}
       </div>
 
       <ul className="menu">
+
         <li>
-          <Link to="/">🏠 Dashboard</Link>
+          <Link to="/">
+            <FiHome className="icon" />
+            <span className="menu-text">Dashboard</span>
+          </Link>
         </li>
 
         <li>
-          <Link to="/supply-request-list">📋 Supply Requests</Link>
+          <Link to="/supply-request-list">
+            <FiClipboard className="icon" />
+            <span className="menu-text">Supply Requests</span>
+          </Link>
         </li>
 
         {role === "Admin" && (
           <>
             <li>
-              <Link to="/category-master">📂 Category Master</Link>
+              <Link to="/category-master">
+                <FiFolder className="icon" />
+                <span className="menu-text">Category Master</span>
+              </Link>
             </li>
 
             <li>
-              <Link to="/department-master">🏢 Department Master</Link>
+              <Link to="/department-master">
+                <FaBuilding className="icon" />
+                <span className="menu-text">Department Master</span>
+              </Link>
             </li>
 
             <li>
-              <Link to="/item-master">📦 Item Master</Link>
+              <Link to="/item-master">
+                <FiBox className="icon" />
+                <span className="menu-text">Item Master</span>
+              </Link>
             </li>
           </>
         )}
+
       </ul>
     </div>
   );

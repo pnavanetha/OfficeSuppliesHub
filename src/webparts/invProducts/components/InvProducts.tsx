@@ -3,6 +3,8 @@ import type { IInvProductsProps } from './IInvProductsProps';
 import { HashRouter } from 'react-router-dom';
 import RoutesItems from './Navigation/Routes';
 import { SPHttpClient } from '@microsoft/sp-http';
+import NavigationBar from "./Navigation/NavigationBar";
+import "./CSS/App.css";
 
 interface IState {
   role: 'Admin' | 'Staff' | null;
@@ -42,7 +44,16 @@ export default class InvProducts extends React.Component<IInvProductsProps, ISta
 
     return (
       <HashRouter>
-        <RoutesItems context={this.props.context} role={this.state.role} />
+        <div className="app-container">
+          <NavigationBar role={this.state.role} />
+
+          <div className="main-content">
+            <RoutesItems
+              context={this.props.context}
+              role={this.state.role}
+            />
+          </div>
+        </div>
       </HashRouter>
     );
   }

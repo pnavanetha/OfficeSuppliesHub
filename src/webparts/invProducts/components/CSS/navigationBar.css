@@ -1,46 +1,101 @@
 .sidebar {
-  width: 250px;
-  height: 100vh;
+  width: 260px;
+  min-height: 100vh;
   background: #071739;
   color: white;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding-top: 20px;
+  position: relative;
+  transition: width 0.3s ease;
+  overflow: hidden;
 }
 
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .logo h2 {
+  display: none;
+}
+
+/* Toggle Button */
+
+.toggle-btn {
+  position: absolute;
+  right: -15px;
+  top: 20px;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+  border: 1px solid #ddd;
+
+  background: white;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 100;
+}
+
+/* Logo */
+
 .logo {
-  text-align: center;
-  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.logo-icon {
+  font-size: 30px;
 }
 
 .logo h2 {
-  color: white;
   margin: 0;
+  color: white;
 }
+
+/* Menu */
 
 .menu {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .menu li {
-  margin: 15px 0;
+  list-style: none;
+  margin: 5px 10px;
 }
 
 .menu li a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
   color: white;
   text-decoration: none;
-  padding: 12px 20px;
-  transition: 0.3s;
-  border-radius: 8px;
+
+  padding: 12px 15px;
+  border-radius: 10px;
+
+  transition: all 0.3s ease;
 }
 
 .menu li a:hover {
   background: #2563eb;
 }
 
-.menu li a.active {
-  background: #2563eb;
+.icon {
+  font-size: 20px;
+  min-width: 24px;
+}
+
+.menu-text {
+  white-space: nowrap;
 }

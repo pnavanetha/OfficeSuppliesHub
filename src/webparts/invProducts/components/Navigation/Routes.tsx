@@ -6,7 +6,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import AdminDashboard from '../Forms/AdminDashboard';
 import StaffDashboard from '../Forms/StaffDashboard';
 import CategoryMaster from '../Forms/CategoryMaster';
-import NavigationBar from '../Navigation/NavigationBar';
+// import NavigationBar from '../Navigation/NavigationBar';
 import DeparmentMaster from '../Forms/DepartmentMaster';
 import ItemMaster from '../Forms/ItemMaster';
 import SupplyRequestList from '../Forms/SupplyRequestList';
@@ -23,7 +23,7 @@ interface IRoutesProps {
 const RoutesItems: React.FC<IRoutesProps> = ({ role, context }) => {
   return (
     <>
-      <NavigationBar role={role} />
+      {/* <NavigationBar role={role} /> */}
 
       <Routes>
         <Route path="/" element={role === 'Admin' ? <AdminDashboard  context={context}/> : <StaffDashboard />} />
