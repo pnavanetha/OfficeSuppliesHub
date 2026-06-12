@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const AdminDashboard = (props: any) => {
 
-  const [tableHeaders, setTableHeaders] = useState<string[]>([]);
+  const [tableHeaders, setTableHeaders] = useState<any[]>([]);
   const [tableData, setTableData] = useState<any[]>([]);
   
 
@@ -15,40 +15,7 @@ const AdminDashboard = (props: any) => {
     loadData("All");
   }, []);
 
-  // const loadData = async (action: string) => {
-  //   try {
-  //     const tableHeaders: any = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
-  //     setTableHeaders(tableHeaders);
-  //     let filterQuery = '';
-  //     if (action == "Pending") {
-  //       filterQuery = "Status eq 'Submitted'";
-  //     }
-  //     else if (action == "My") {
-  //       filterQuery = `Author/Id eq ${props.context.pageContext.legacyPageContext.userId}`;
-  //     }
-  //     const res: any = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.filter(filterQuery).select("Id","RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName").expand("EmployeeName", "Department", "CategoryName", "ItemName")();
-  //     const tableData = res.map((item: any) => {
-  //       return ({
-  //         "ID": item.Id,
-  //         "Employee": item.Employee,
-  //         "Department": item.Department,
-  //         "Category": item.Category,
-  //         "Item": item.Item,
-  //         "Request": item.Request,
-  //         "Comments": item.Comments,
-  //         "Status": item.Status,
-  //         "Edit": item.Edit
-  //       })
-  //     });
-  //     setTableData(tableData);
-  //     console.log(tableData);
-
-
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  const loadData = async (action: string) => {
+  const loadData = async (action: any) => {
     try {
       const headers = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
       setTableHeaders(headers);

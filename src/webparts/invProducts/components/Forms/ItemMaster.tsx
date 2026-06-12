@@ -7,16 +7,17 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-interface ItemsData {
-    ItemName: string;
-    CategoryNameId: number;
-    IsActive: boolean;
-}
+// interface ItemsData {
+//     ItemName: string;
+//     CategoryNameId: number;
+//     IsActive: boolean;
+// }
 
 export const ItemMaster = (props: any) => {
     const listName = "OfficeItemMaster";
 
-    const [formData, setFormData] = useState<ItemsData>({
+    // const [formData, setFormData] = useState<ItemsData>({
+    const [formData, setFormData] = useState({
         ItemName: "",
         CategoryNameId: 0,
         IsActive: true,

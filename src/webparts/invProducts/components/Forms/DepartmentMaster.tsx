@@ -7,15 +7,16 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-interface DepartmentData {
-    Name: string;
-    IsActive: boolean;
-}
+// interface DepartmentData {
+//     Name: string;
+//     IsActive: boolean;
+// }
 
 export const DeparmentMaster = (props: any) => {
     const listName = "OfficeDepartments";
 
-    const [formData, setFormData] = useState<DepartmentData>({
+    const [formData, setFormData] = useState({
+    // const [formData, setFormData] = useState<DepartmentData>({
         Name: "",
         IsActive: true,
     });
@@ -58,7 +59,7 @@ export const DeparmentMaster = (props: any) => {
                 alert("Updated Successfully");
             } else {
                 await sp.web.lists.getByTitle(listName).items.add(formData);
-                alert("Saved Successfully");
+                alert("Submitted Successfully");
             }
 
             resetForm();

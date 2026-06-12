@@ -7,15 +7,16 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-interface IFormData {
-    CategoryName: string;
-    IsActive: boolean;
-}
+// interface IFormData {
+//     CategoryName: string;
+//     IsActive: boolean;
+// }
 
 export const CategoryMaster = (props: any) => {
     const listName = "OfficeCategoryMaster";
 
-    const [formData, setFormData] = useState<IFormData>({
+    // const [formData, setFormData] = useState<IFormData>({
+    const [formData, setFormData] = useState({
         CategoryName: "",
         IsActive: true,
     });
@@ -31,10 +32,7 @@ export const CategoryMaster = (props: any) => {
 
     const loadData = async () => {
         try {
-            const res = await sp.web.lists
-                .getByTitle(listName)
-                .items();
-
+            const res = await sp.web.lists.getByTitle(listName).items();
             setData(res);
         } catch (error) {
             console.log(error);
@@ -58,20 +56,12 @@ export const CategoryMaster = (props: any) => {
 
         try {
             if (itemId > 0) {
-                await sp.web.lists
-                    .getByTitle(listName)
-                    .items.getById(itemId)
-                    .update(formData);
-
-                alert("Updated Successfully");
+                await sp.web.lists.getByTitle(listName).items.getById(itemId).update(formData);
+                 alert("Updated Successfully");
             } else {
-                await sp.web.lists
-                    .getByTitle(listName)
-                    .items.add(formData);
-
+                await sp.web.lists.getByTitle(listName).items.add(formData);
                 alert("Saved Successfully");
             }
-
             resetForm();
             loadData();
         } catch (error) {
