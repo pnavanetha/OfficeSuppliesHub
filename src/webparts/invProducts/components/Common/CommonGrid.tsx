@@ -13,14 +13,14 @@ interface CommonGridProps {
 const CommonGrid: React.FC<CommonGridProps> = ({
   items,
   columns,
-  pageSize = 10,
+  pageSize = 5,
   searchFields = []
 }) => {
 
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState<string>("");
-  const [isSortedDescending, setIsSortedDescending] = useState<boolean>(false);
+  const [isSortedDescending, setIsSortedDescending] = useState<boolean>(true);
 
   // ✅ Filtering
   const filteredData = items.filter((item: any) =>
