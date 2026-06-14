@@ -1,0 +1,130 @@
+.master-container {
+    padding: 15px;
+}
+.header-card {
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.grid-card {
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    padding: 15px;
+}
+
+.page-title {
+    background: #0d4b5e;
+    color: white;
+    padding: 18px;
+    font-size: 24px;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+.add-btn {
+    background: #0d4b5e;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: #083746;
+}
+
+.form-section {
+    border: 1px solid #ddd;
+    background: #fafafa;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input {
+    padding: 8px;
+}
+
+.checkbox-section {
+    margin-bottom: 15px;
+}
+
+.button-section {
+    display: flex;
+    gap: 10px;
+}
+
+.submit-btn {
+    background: #0d4b5e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+}
+
+.cancel-btn {
+    background: gray;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+}
+
+/* .search-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.search-container .ms-TextField {
+    width: 200px;
+} */
+
+/* .grid-section {
+    border: 1px solid #e5e5e5;
+} */
+
+.edit-icon {
+    color: #0078d4;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* .ms-DetailsHeader {
+    background: #f3f2f1;
+}
+
+.ms-DetailsRow:hover {
+    background: #f8f8f8;
+} */
+/* .pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.pagination button {
+    padding: 6px 15px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+} */
+
+/* .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+} */

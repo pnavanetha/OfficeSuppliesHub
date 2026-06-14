@@ -1,0 +1,43 @@
+/* ✅ CommonGrid.css */
+
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.search-container .ms-TextField {
+    width: 200px;
+}
+
+.grid-section {
+    border: 1px solid #e5e5e5;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.pagination button {
+    padding: 6px 15px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Fluent UI Overrides */
+.ms-DetailsHeader {
+    background: #f3f2f1;
+}
+
+.ms-DetailsRow:hover {
+    background: #f8f8f8;
+}
