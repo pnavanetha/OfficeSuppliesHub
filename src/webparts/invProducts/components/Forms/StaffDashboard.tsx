@@ -9,76 +9,62 @@ const StaffDashboard = (props: any) => {
   const [tableHeaders, setTableHeaders] = useState<string[]>([]);
   const [tableData, setTableData] = useState<string[]>([]);
 
-
   const sp = spfi().using(SPFx(props.context));
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadData("All");
+    loadData();
   }, []);
 
-  const loadData = async (action: string) => {
-    try {
-      const headers = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
-      setTableHeaders(headers);
+const loadData = async () => {
+  try {
+    const headers = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
+    setTableHeaders(headers);
 
-      let filterQuery = '';
+    const userId = props.context.pageContext.legacyPageContext.userId; 
 
-      if (action === "Pending") {
-        filterQuery = "Status eq 'Submitted'";
-      } else if (action === "My") {
-        filterQuery = `Author/Id eq ${props.context.pageContext.legacyPageContext.userId}`;
-      }
+    console.log("User ID:", userId);
 
-      let items = sp.web.lists.getByTitle("OfficeSupplyRequestList").items;
+   const res: any = await sp.web.lists
+  .getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Id", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName")
+  .expand("EmployeeName", "Department", "CategoryName", "ItemName")
+  .filter(`EmployeeName/Id eq ${userId}`)();
 
-      if (filterQuery) {
-        items = items.filter(filterQuery);
-      }
+    console.log("Filtered Data:", res);
 
-      const res: any = await items
-        .select(
-          "Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "EmployeeName/EMail", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName"
-        )
-        .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
+    const data = res.map((item: any) => ({
+      ID: item.Id,
+      Employee: item.EmployeeName?.Title,
+      Department: item.Department?.Name,
+      Category: item.CategoryName?.CategoryName,
+      Item: item.ItemName?.ItemName,
+      Request: item.RequestDate,
+      Comments: item.Comments,
+      Status: item.Status,
+    }));
 
-      console.log(res);
+    setTableData(data);
 
-      const data = res.map((item: any) => ({
-        ID: item.Id,
-        Employee: item.EmployeeName?.Title,
-        Department: item.Department?.Name,
-        Category: item.CategoryName?.CategoryName,
-        Item: item.ItemName?.ItemName,
-        Request: item.RequestDate,
-        Comments: item.Comments,
-        Status: item.Status,
-        // Edit: "Edit"
-      }));
+  } catch (error) {
+    console.error("Error loading data:", error);
+  }
+};
 
-      setTableData(data);
-
-
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
-  };
-  
-  const editRequest = (id: number): void => {navigate(`/SupplyRequestForm/${id}`);
+  const editRequest = (id: number): void => {
+    navigate(`/SupplyRequestForm/${id}`);
   };
   return (
     <div className="dashboard-content">
       <div className="header-card">
         <div className="page-title">Staff Dashboard</div>
       </div>
-      {/* 
-      <h2>Staff Dashboard</h2> */}
+
 
       <div className="dashboard-cards">
 
         {/* <div className="dashboard-card" onClick={() => loadData("All")} >All Requests </div>
         <div className="dashboard-card" onClick={() => loadData("Pending")}>Pending Requests</div> */}
-        <div className="dashboard-card" onClick={() => loadData("My")}> My Requests</div>
+        <div className="dashboard-card" onClick={loadData}>My Requests</div>
 
       </div>
 

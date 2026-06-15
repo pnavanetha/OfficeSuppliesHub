@@ -26,23 +26,28 @@ const RoutesItems: React.FC<IRoutesProps> = ({ role, context }) => {
       {/* <NavigationBar role={role} /> */}
 
       <Routes>
-        <Route path="/" element={role === 'Admin' ? <AdminDashboard  context={context}/> : <StaffDashboard />} />
+        <Route
+          path="/"
+          element={role === 'Admin'
+            ? <AdminDashboard context={context} />
+            : <StaffDashboard context={context} />}
+        />
         <Route path="/supply-request-list" element={<SupplyRequestList context={context} role={role} />} />
-        <Route path="/SupplyRequestForm" element={<SupplyRequestForm context={context} role={role} />} />    
+        <Route path="/SupplyRequestForm" element={<SupplyRequestForm context={context} role={role} />} />
         <Route path="/SupplyRequestForm/:id" element={<SupplyRequestForm context={context} role={role} />} />
         <Route path="/my-requests" element={<MyRequest context={context} role={role} />} />
-          
+
         {role === 'Admin' && (
           <>
-            <Route path="/all-requests" element={<AllRequest context={context} />} />   
-            <Route path="/pending-requests" element={<PendingRequest context={context} />} />    
+            <Route path="/all-requests" element={<AllRequest context={context} />} />
+            <Route path="/pending-requests" element={<PendingRequest context={context} />} />
           </>
         )}
 
         {role === 'Admin' && (
           <>
             <Route path="/category-master" element={<CategoryMaster context={context} />} />
-            <Route  path="/department-master" element={<DeparmentMaster context={context} />} />     
+            <Route path="/department-master" element={<DeparmentMaster context={context} />} />
             <Route path="/item-master" element={<ItemMaster context={context} />} />
           </>
 
