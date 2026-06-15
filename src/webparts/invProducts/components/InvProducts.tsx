@@ -2,8 +2,12 @@ import * as React from 'react';
 import type { IInvProductsProps } from './IInvProductsProps';
 import { HashRouter } from 'react-router-dom';
 import RoutesItems from './Navigation/Routes';
-import { SPHttpClient } from '@microsoft/sp-http';
+// import { SPHttpClient } from '@microsoft/sp-http';
 import NavigationBar from "./Navigation/NavigationBar";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-users/web";
+
 import "./CSS/App.css";
 
 interface IState {
@@ -28,18 +32,29 @@ export default class InvProducts extends React.Component<IInvProductsProps, ISta
   }
 
   private async isUserInGroup(groupName: string): Promise<boolean> {
-    const response = await this.props.context.spHttpClient.get(
-      `${this.props.context.pageContext.web.absoluteUrl}/_api/web/currentuser/groups`,
-      SPHttpClient.configurations.v1
-    );
+    
+    console.log("Group Name:", groupName);
+    console.log("User email:", this.props.context.pageContext.user.email);
 
-    const data = await response.json();
-    return data.value.some((g: any) => g.Title === groupName);
+    // const response = await this.props.context.spHttpClient.get(
+    //   `${this.props.context.pageContext.web.absoluteUrl}/_api/web/currentuser/groups`,
+    //   SPHttpClient.configurations.v1
+    // );
+    const sp = spfi().using(SPFx(this.props.context));
+
+
+
+    // const data = await response.json();
+    // return data.value.some((g: any) => g.Title === groupName);
+
+    const groups = await sp.web.currentUser.groups();
+    return groups.some((g: any) => g.Title === groupName);
+    
   }
 
   public render(): React.ReactElement<IInvProductsProps> {
     if (!this.state.role) {
-      return <div>Loading...</div>;
+       return <div>Loading...</div>;
     }
 
     return (

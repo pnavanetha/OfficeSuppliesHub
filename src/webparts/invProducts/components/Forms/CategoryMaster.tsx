@@ -14,7 +14,9 @@ import "../CSS/CategoryMaster.css";
 const CategoryMaster = (props: any) => {
 
     const listName = "OfficeCategoryMaster";
+
     const sp = spfi().using(SPFx(props.context));
+
     const [showForm, setShowForm] = useState(false);
     const [itemId, setItemId] = useState<number>(0);
     const [data, setData] = useState<any[]>([]);
@@ -90,7 +92,7 @@ const CategoryMaster = (props: any) => {
         }
     };
 
-    //  Columns only (no sorting logic here)
+    //  Columns only 
     const columns: IColumn[] = [
         {
             key: "edit", name: "Edit", minWidth: 60, maxWidth: 60,
@@ -104,7 +106,7 @@ const CategoryMaster = (props: any) => {
         {
             key: "active", name: "Active", fieldName: "IsActive", minWidth: 100,
             onRender: (item: any) =>
-                item.IsActive ? "Yes" : "No"
+                item.IsActive ? "Yes" : "No"            
         }
     ];
 
