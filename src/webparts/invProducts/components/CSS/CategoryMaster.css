@@ -12,6 +12,9 @@
     background: #fff;
     padding: 15px;
 }
+.asterisk{
+    color: red;
+}
 
 .page-title {
     background: #0d4b5e;

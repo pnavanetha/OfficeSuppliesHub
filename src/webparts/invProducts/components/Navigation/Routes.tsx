@@ -11,9 +11,9 @@ import DeparmentMaster from '../Forms/DepartmentMaster';
 import ItemMaster from '../Forms/ItemMaster';
 import SupplyRequestList from '../Forms/SupplyRequestList';
 import SupplyRequestForm from '../Forms/SupplyRequestForm';
-import AllRequest from '../Forms/AllRequests';
-import PendingRequest from '../Forms/PendingRequest';
-import MyRequest from '../Forms/MyRequests';
+// import AllRequest from '../Forms/AllRequests';
+// import PendingRequest from '../Forms/PendingRequest';
+// import MyRequest from '../Forms/MyRequests';
 
 interface IRoutesProps {
   context: any;
@@ -35,14 +35,14 @@ const RoutesItems: React.FC<IRoutesProps> = ({ role, context }) => {
         <Route path="/supply-request-list" element={<SupplyRequestList context={context} role={role} />} />
         <Route path="/SupplyRequestForm" element={<SupplyRequestForm context={context} role={role} />} />
         <Route path="/SupplyRequestForm/:id" element={<SupplyRequestForm context={context} role={role} />} />
-        <Route path="/my-requests" element={<MyRequest context={context} role={role} />} />
+        {/* <Route path="/my-requests" element={<MyRequest context={context} role={role} />} /> */}
 
-        {role === 'Admin' && (
+        {/* {role === 'Admin' && (
           <>
             <Route path="/all-requests" element={<AllRequest context={context} />} />
             <Route path="/pending-requests" element={<PendingRequest context={context} />} />
           </>
-        )}
+        )} */}
 
         {role === 'Admin' && (
           <>

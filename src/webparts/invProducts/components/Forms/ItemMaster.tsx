@@ -1,11 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { spfi, SPFx } from "@pnp/sp";
-
-
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import {showSuccess, showError } from "../Common/Toast";
 
 // interface ItemsData {
 //     ItemName: string;
@@ -62,11 +61,11 @@ export const ItemMaster = (props: any) => {
 
     const handleSubmit = async () => {
         if (!formData.ItemName.trim()) {
-            alert("Item Name is required");
+            showError("Item Name is required");
             return;
         }
         if (formData.CategoryNameId === 0) {
-            alert("Please selct Category");
+            showError("Please selct Category");
             return;
         }
 
@@ -78,20 +77,12 @@ export const ItemMaster = (props: any) => {
 
         try {
             if (itemId > 0) {
-                await sp.web.lists
-                    .getByTitle(listName)
-                    .items.getById(itemId)
-                    .update(payload);
-
-                alert("Updated Successfully");
+                await sp.web.lists.getByTitle(listName).items.getById(itemId).update(payload);
+                showSuccess("Updated Successfully");
             } else {
-                await sp.web.lists
-                    .getByTitle(listName)
-                    .items.add(payload);
-
-                alert("Saved Successfully");
+                await sp.web.lists.getByTitle(listName).items.add(payload);
+                showSuccess("Saved Successfully");
             }
-
             resetForm();
             loadData();
             

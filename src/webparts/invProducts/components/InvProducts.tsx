@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import RoutesItems from './Navigation/Routes';
 // import { SPHttpClient } from '@microsoft/sp-http';
 import NavigationBar from "./Navigation/NavigationBar";
+import { ToastContainer } from 'react-toastify';
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
@@ -59,6 +60,7 @@ export default class InvProducts extends React.Component<IInvProductsProps, ISta
 
     return (
       <HashRouter>
+        <ToastContainer />
         <div className="app-container">
           <NavigationBar role={this.state.role} />
 

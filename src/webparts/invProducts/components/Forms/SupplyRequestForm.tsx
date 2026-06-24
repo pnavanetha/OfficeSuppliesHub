@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { spfi, SPFx } from "@pnp/sp";
 import { useParams, useNavigate } from "react-router-dom";
+import {showSuccess, showError } from "../Common/Toast";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -133,9 +134,9 @@ const SupplyRequestForm = (props: any) => {
 
   const handleSave = async (newStatus: string) => {
 
-    if (formData.DepartmentId === 0) return alert("Select Department");
-    if (formData.CategoryNameId === 0) return alert("Select Category");
-    if (formData.ItemNameId === 0) return alert("Select Item");
+    if (formData.DepartmentId === 0) return showError("Select Department");
+    if (formData.CategoryNameId === 0) return showError("Select Category");
+    if (formData.ItemNameId === 0) return showError("Select Item");
 
     try {
 
@@ -151,14 +152,14 @@ const SupplyRequestForm = (props: any) => {
             Status: newStatus
           });
 
-        alert("Updated Successfully");
+        showSuccess("Updated Successfully");
 
       } else {
         await sp.web.lists
           .getByTitle("OfficeSupplyRequestList")
           .items.add({EmployeeNameId: currentUserId, DepartmentId: Number(formData.DepartmentId), CategoryNameId: Number(formData.CategoryNameId),ItemNameId: Number(formData.ItemNameId),RequestDate: formData.RequestDate, Comments: formData.Comments, Status: newStatus});
 
-        alert("Saved Successfully");
+        showSuccess("Saved Successfully");
       }
 
       navigate("/SupplyRequestList");

@@ -1,11 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { spfi, SPFx } from "@pnp/sp";
-
-
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import {showSuccess, showError } from "../Common/Toast";
 
 // interface DepartmentData {
 //     Name: string;
@@ -50,16 +49,16 @@ export const DeparmentMaster = (props: any) => {
 
     const handleSubmit = async () => {
         if (!formData.Name.trim()) {
-            alert("Department Name is required");
+            showError("Department Name is required");
             return;
         }
 
         try {
             if (itemId > 0) {await sp.web.lists .getByTitle(listName).items.getById(itemId).update(formData);
-                alert("Updated Successfully");
+                showSuccess("Updated Successfully");
             } else {
                 await sp.web.lists.getByTitle(listName).items.add(formData);
-                alert("Submitted Successfully");
+                showSuccess("Submitted Successfully");
             }
 
             resetForm();
@@ -94,24 +93,12 @@ export const DeparmentMaster = (props: any) => {
             <div>
                 <label>Deparment Name *</label>
                 <br />
-
-                <input
-                    type="text"
-                    name="Name"
-                    value={formData.Name}
-                    onChange={handleChange}
-                />
-
+                <input type="text" name="Name" value={formData.Name} onChange={handleChange}/>
                 <br />
                 <br />
 
                 <label>
-                    <input
-                        type="checkbox"
-                        name="IsActive"
-                        checked={formData.IsActive}
-                        onChange={handleChange}
-                    />
+                    <input type="checkbox" name="IsActive" checked={formData.IsActive} onChange={handleChange}/>
                     Is Active
                 </label>
 

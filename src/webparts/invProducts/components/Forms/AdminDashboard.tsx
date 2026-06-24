@@ -19,7 +19,7 @@ const AdminDashboard = (props: any) => {
 
   const loadData = async (action: string) => {
     try {
-      const headers = ["ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", "Edit"];
+      const headers = ["Edit", "ID", "Employee", "Department", "Category", "Item", "Request", "Comments", "Status", ];
       setTableHeaders(headers);
 
       let filterQuery = '';
@@ -99,17 +99,17 @@ const AdminDashboard = (props: any) => {
           {tableData.length > 0 ? (
             tableData.map((item: any) => {
               return (
-                <tr>
-                  {Object.keys(item).map((field: any) => {
-                    return (
-                      <td>{item[field]}</td>
-                    )
-                  })}
+                <tr key={item.ID}>
                   <td>
                     <button className="edit-btn" onClick={() => editRequest(item.ID)}>
                       Edit
                     </button>
                   </td>
+                  {Object.keys(item).map((field: any) => {
+                    return (
+                      <td key={field}>{item[field]}</td>
+                    )
+                  })}
                 </tr>
               )
             })

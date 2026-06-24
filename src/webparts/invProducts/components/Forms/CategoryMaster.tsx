@@ -4,6 +4,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import { FiEdit } from "react-icons/fi";
 import { IColumn } from "@fluentui/react";
 import CommonGrid from "../Common/CommonGrid";
+import { showSuccess, showError } from "../Common/Toast";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -20,9 +21,7 @@ const CategoryMaster = (props: any) => {
     const [showForm, setShowForm] = useState(false);
     const [itemId, setItemId] = useState<number>(0);
     const [data, setData] = useState<any[]>([]);
-
     const [formData, setFormData] = useState({
-
         CategoryName: "", IsActive: true
     });
 
@@ -50,8 +49,7 @@ const CategoryMaster = (props: any) => {
 
     const resetForm = () => {
         setItemId(0);
-
-        setFormData({CategoryName: "", IsActive: true});
+        setFormData({ CategoryName: "", IsActive: true });
     };
 
     const openAddForm = () => {
@@ -59,8 +57,10 @@ const CategoryMaster = (props: any) => {
         setShowForm(true);
     };
 
-    const editItem = (item: any) => {setItemId(item.Id);
-        setFormData({CategoryName: item.CategoryName, IsActive: item.IsActive
+    const editItem = (item: any) => {
+        setItemId(item.Id);
+        setFormData({
+            CategoryName: item.CategoryName, IsActive: item.IsActive
         });
         setShowForm(true);
     };
@@ -68,7 +68,7 @@ const CategoryMaster = (props: any) => {
     const handleSubmit = async () => {
 
         if (!formData.CategoryName.trim()) {
-            alert("Category Name is required");
+            showError("Category Name is required.");
             return;
         }
 
@@ -76,11 +76,11 @@ const CategoryMaster = (props: any) => {
 
             if (itemId > 0) {
                 await sp.web.lists.getByTitle(listName).items.getById(itemId).update(formData);
-                alert("Updated Successfully");
+                showSuccess("Category Updated Successfully.");
 
             } else {
                 await sp.web.lists.getByTitle(listName).items.add(formData);
-                alert("Saved Successfully");
+                showSuccess("Category Submitted Successfully.");
             }
 
             resetForm();
@@ -106,58 +106,85 @@ const CategoryMaster = (props: any) => {
         {
             key: "active", name: "Active", fieldName: "IsActive", minWidth: 100,
             onRender: (item: any) =>
-                item.IsActive ? "Yes" : "No"            
+                item.IsActive ? "Yes" : "No"
         }
     ];
 
+    // 
     return (
-        <div className="master-container">
+  <div className="master-container">
 
-            <div className="header-card">
-                <div className="page-title">Category Master</div>
+    <div className="header-card">
+      
+      {/* ✅ Header Row */}
+      <div className="header-top">
+        <div className="page-title">Category Master</div>
 
-                <div className="toolbar">                
-                    {!showForm && (
-                        <button className="add-btn" onClick={openAddForm}>Add</button>
-                    )}
-                </div>
-            </div>
-
-            {showForm && (
-                <div className="form-section">
-                    <div className="form-group">
-                        <label>Category Name *</label>
-                        <input type="text" name="CategoryName" value={formData.CategoryName} onChange={handleChange} />
-                    </div>
-
-                    <div className="checkbox-section">
-                        <label>
-                            <input type="checkbox" name="IsActive" checked={formData.IsActive} onChange={handleChange} /> Is Active
-                        </label>
-                    </div>
-
-                    <div className="button-section">
-                        <button className="submit-btn" onClick={handleSubmit} >
-                            {itemId > 0 ? "Update" : "Submit"}
-                        </button>
-
-                        <button className="cancel-btn" onClick={() => {
-                            resetForm();
-                                setShowForm(false);
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-
-                </div>
-            )}
-
-            <div className="grid-card">
-                <CommonGrid items={data} columns={columns} pageSize={5} searchFields={["CategoryName"]} />
-            </div>
+        <div className="toolbar">
+          {!showForm && (
+            <button className="add-btn" onClick={openAddForm}>
+              Add
+            </button>
+          )}
         </div>
-    );
+      </div>
+
+      {/* ✅ FORM INSIDE HEADER */}
+      {showForm && (
+        <div className="form-section">
+          <div className="form-group">
+            <label>Category Name <span className="asterisk">*</span> </label>
+            <input
+              type="text"
+              name="CategoryName"
+              value={formData.CategoryName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="checkbox-section">
+            <label>
+              <input
+                type="checkbox"
+                name="IsActive"
+                checked={formData.IsActive}
+                onChange={handleChange}
+              />
+              Is Active
+            </label>
+          </div>
+
+          <div className="button-section">
+            <button className="submit-btn" onClick={handleSubmit}>
+              {itemId > 0 ? "Update" : "Submit"}
+            </button>
+
+            <button
+              className="cancel-btn"
+              onClick={() => {
+                resetForm();
+                setShowForm(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* ✅ Grid remains separate */}
+    <div className="grid-card">
+      <CommonGrid
+        items={data}
+        columns={columns}
+        pageSize={5}
+        searchFields={["CategoryName"]}
+      />
+    </div>
+
+  </div>
+);
 };
 
 export default CategoryMaster;
