@@ -85,7 +85,6 @@ const CommonGrid: React.FC<CommonGridProps> = ({
   return (
     <div>
 
-      {/* 🔎 Search */}
       <div className="search-container">
         <TextField
           placeholder="Search..."

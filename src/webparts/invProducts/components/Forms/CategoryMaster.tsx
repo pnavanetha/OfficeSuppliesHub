@@ -178,7 +178,7 @@ const CategoryMaster = (props: any) => {
       <CommonGrid
         items={data}
         columns={columns}
-        pageSize={5}
+        pageSize={10}
         searchFields={["CategoryName"]}
       />
     </div>
