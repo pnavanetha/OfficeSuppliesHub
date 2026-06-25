@@ -15,7 +15,22 @@
 .asterisk{
     color: red;
 }
+.form-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+}
 
+/* ✅ Normal focus */
+.form-group input:focus {
+    outline: none;
+    border: 1px solid #0d4b5e;
+
+}
+
+/* ✅ Error state */
+.input-error:focus {
+    border: 1px solid red !important;
+}
 .page-title {
     background: #0d4b5e;
     color: white;
