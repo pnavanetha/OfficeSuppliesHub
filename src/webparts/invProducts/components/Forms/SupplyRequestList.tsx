@@ -1,14 +1,16 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { spfi, SPFx } from "@pnp/sp";
-import { useNavigate } from "react-router-dom";
-
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import { useNavigate } from "react-router-dom";
+import { formatDateIN } from "../Common/dateHelpers";
+
+
 
 const SupplyRequestList = (props: any) => {
-    
+
 
     const sp = spfi().using(SPFx(props.context));
     const navigate = useNavigate();
@@ -31,9 +33,11 @@ const SupplyRequestList = (props: any) => {
         }
     };
 
-    const addRequest = () => {navigate("/SupplyRequestForm");
+    const addRequest = () => {
+        navigate("/SupplyRequestForm");
     };
-    const editRequest = (id: number): void => {navigate(`/SupplyRequestForm/${id}`);
+    const editRequest = (id: number): void => {
+        navigate(`/SupplyRequestForm/${id}`);
     };
     const deleteRequest = async (id: number) => {
         const confirmDelete = window.confirm(
@@ -76,7 +80,7 @@ const SupplyRequestList = (props: any) => {
                 style={{
                     width: "100%",
                     borderCollapse: "collapse"
-                }}                
+                }}
             >
                 <thead>
                     <tr>
@@ -102,11 +106,20 @@ const SupplyRequestList = (props: any) => {
 
                                 <tr key={item.Id}>
                                     <td>{item.Id}</td>
-                                    <td>{item.EmployeeName?.Title}</td>                                  
+                                    <td>{item.EmployeeName?.Title}</td>
                                     <td>{item.Department?.Name}</td>
                                     <td>{item.CategoryName?.CategoryName}</td>
                                     <td>{item.ItemName?.ItemName}</td>
-                                    <td>{item.RequestDate}</td>
+                                    <td>{formatDateIN (item.RequestDate) }</td>
+
+                                    <td>
+                                        {/* {new Date(item.RequestDate).toLocaleDateString("en-US", {
+                                            timeZone: "Asia/Kolkata"
+                                        })} */}
+                                        {/* {new Date(item.RequestDate).toLocaleDateString("en-IN")} */}
+
+                                    </td>
+
                                     <td>{item.Comments}</td>
                                     <td>{item.Status}</td>
                                     <td>

@@ -1,13 +1,15 @@
 import * as React from "react";
-import { useEffect, useState, useRed } from "react";
+import "../CSS/App.css";
+import { useEffect, useState, useRef} from "react";
 import { spfi, SPFx } from "@pnp/sp";
-import { useParams, useNavigate } from "react-router-dom";
-import {showSuccess, showError } from "../Common/Toast";
-
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/site-users/web";
+import { useParams, useNavigate } from "react-router-dom";
+import {showSuccess, showError } from "../Common/Toast";
+// import { formatDateIN } from "../Common/dateHelpers";
+
 
 interface IRequestData {
   DepartmentId: number;
@@ -40,6 +42,7 @@ const SupplyRequestForm = (props: any) => {
     CategoryNameId: 0,
     ItemNameId: 0,
     RequestDate: new Date().toISOString().split("T")[0],
+    // RequestDate: formatDateIN(new Date().toISOString()),
     Comments: ""
   });
 
@@ -112,7 +115,7 @@ const SupplyRequestForm = (props: any) => {
 
     setFormData({
       ...formData,
-      [name]: value
+      [name]: Number(value)
     });
   };
 
@@ -131,12 +134,38 @@ const SupplyRequestForm = (props: any) => {
       ItemNameId: 0
     });
   };
+  
+  const focusWithError = (element: any) => {
+    setTimeout(() => {
+      if (element) {
+        element.focus();
+        element.classList.add("input-error");
+      }
+    }, 0);
+  };
+  const deptRef = useRef<HTMLSelectElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
+  const itemRef = useRef<HTMLSelectElement>(null);
 
   const handleSave = async (newStatus: string) => {
 
-    if (formData.DepartmentId === 0) return showError("Select Department");
-    if (formData.CategoryNameId === 0) return showError("Select Category");
-    if (formData.ItemNameId === 0) return showError("Select Item");
+    if (formData.DepartmentId === 0) {
+      showError("Select Department");
+      focusWithError(deptRef.current);
+      return;
+    }
+    if (formData.CategoryNameId === 0) {
+      showError("Select Category Name");
+      focusWithError(categoryRef.current);
+      return;
+    }
+
+    if (formData.ItemNameId === 0) {
+      showError("Select Item");
+      focusWithError(itemRef.current);
+      return;
+    }
+     
 
     try {
 
@@ -193,7 +222,7 @@ const SupplyRequestForm = (props: any) => {
       <input type="text" value={currentUser} readOnly /><br /><br />
 
       <label>Department</label><br />
-      <select name="DepartmentId" value={formData.DepartmentId} onChange={handleChange}>
+      <select name="DepartmentId" value={formData.DepartmentId} onChange={handleChange} ref={deptRef}>
         <option value={0}>Select Department</option>
         {departmentData.map((item) => (
           <option key={item.Id} value={item.Id}>{item.Name}</option>
@@ -201,7 +230,7 @@ const SupplyRequestForm = (props: any) => {
       </select><br /><br />
 
       <label>Category</label><br />
-      <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleCategoryChange}>
+      <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleCategoryChange} ref={categoryRef}>
         <option value={0}>Select Category</option>
         {categoryData.map((item) => (
           <option key={item.Id} value={item.Id}>{item.CategoryName}</option>
@@ -209,7 +238,7 @@ const SupplyRequestForm = (props: any) => {
       </select><br /><br />
 
       <label>Item Name</label><br />
-      <select name="ItemNameId" value={formData.ItemNameId} onChange={handleChange}>
+      <select name="ItemNameId" value={formData.ItemNameId} onChange={handleChange} ref={itemRef}>
         <option value={0}>Select Item</option>
         {filteredItems.map((item) => (
           <option key={item.Id} value={item.Id}>{item.ItemName}</option>

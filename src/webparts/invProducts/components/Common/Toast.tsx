@@ -5,7 +5,7 @@ export type ToastType = "success" | "error" | "info" | "warning";
 
 const defaultOptions: ToastOptions = {
   position: "top-right",
-  autoClose: 3000,
+  autoClose: 2000,
   // autoClose: false,
   hideProgressBar: false,
   closeOnClick: true,

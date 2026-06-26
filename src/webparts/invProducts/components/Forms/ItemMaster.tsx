@@ -1,10 +1,11 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import {showSuccess, showError } from "../Common/Toast";
+import "../CSS/App.css";
 
 // interface ItemsData {
 //     ItemName: string;
@@ -59,13 +60,28 @@ export const ItemMaster = (props: any) => {
         });
     };
 
+    const focusWithError = (element: any) => {
+        setTimeout(() => {
+            if(element) {
+                element.focus();
+                element.classList.add("input-error");
+            }
+        }, 0);
+    };
+
+    const itemRef = useRef<HTMLInputElement>(null);
+    const categoryRef = useRef<HTMLSelectElement>(null);
+
+
     const handleSubmit = async () => {
         if (!formData.ItemName.trim()) {
             showError("Item Name is required");
+            focusWithError(itemRef.current);
             return;
         }
         if (formData.CategoryNameId === 0) {
             showError("Please selct Category");
+            focusWithError(categoryRef.current);
             return;
         }
 
@@ -119,11 +135,10 @@ export const ItemMaster = (props: any) => {
                 <label>Item Name *</label>
                 <br />
 
-                <input type="text" name="ItemName" value={formData.ItemName} onChange={handleChange} />
+                <input type="text" name="ItemName" value={formData.ItemName} onChange={handleChange} ref={itemRef} />
                 <br />
                 <label>Category Name</label>
-                <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleChange}
-                >
+                <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleChange} ref={categoryRef}>
                     <option value={0}>Select Category</option>
                     {
                         categoryData.map((item) => {

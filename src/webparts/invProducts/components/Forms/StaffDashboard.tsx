@@ -3,6 +3,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Dashboard.css";
+import { formatDateIN } from "../Common/dateHelpers";
 
 const StaffDashboard = (props: any) => {
 
@@ -38,7 +39,7 @@ const loadData = async () => {
       Department: item.Department?.Name,
       Category: item.CategoryName?.CategoryName,
       Item: item.ItemName?.ItemName,
-      Request: item.RequestDate,
+      Request: formatDateIN (item.RequestDate),
       Comments: item.Comments,
       Status: item.Status,
     }));

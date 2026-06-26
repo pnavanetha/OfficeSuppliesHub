@@ -128,7 +128,7 @@ const CategoryMaster = (props: any) => {
     }
   ];
 
-  // 
+
   return (
     <div className="master-container">
 

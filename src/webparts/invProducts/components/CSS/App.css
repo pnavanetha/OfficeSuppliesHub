@@ -8,3 +8,23 @@
   padding: 20px;
   overflow-x: auto;
 }
+/* ✅ Apply to all controls globally */
+input,
+select,
+textarea {
+    padding: 6px;
+    border: 1px solid #ccc;
+}
+
+/* ✅ Remove black outline */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border: 1px solid #0d4b5e;   /* normal focus */
+}
+
+/* ✅ Error style */
+.input-error:focus {
+    border: 1px solid red !important;
+}
