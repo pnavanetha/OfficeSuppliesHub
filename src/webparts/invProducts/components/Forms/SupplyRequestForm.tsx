@@ -1,15 +1,15 @@
 import * as React from "react";
 import "../CSS/App.css";
-import { useEffect, useState, useRef} from "react";
+import { useEffect, useState, useRef } from "react";
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/site-users/web";
 import { useParams, useNavigate } from "react-router-dom";
-import {showSuccess, showError } from "../Common/Toast";
+import { showSuccess, showError } from "../Common/Toast";
 // import { formatDateIN } from "../Common/dateHelpers";
-
+import "../CSS/RequestForm.css";
 
 interface IRequestData {
   DepartmentId: number;
@@ -20,8 +20,8 @@ interface IRequestData {
 }
 
 const SupplyRequestForm = (props: any) => {
-  const { role } = props;  
-  
+  const { role } = props;
+
   const sp = spfi().using(SPFx(props.context));
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const SupplyRequestForm = (props: any) => {
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
 
   const [status, setStatus] = useState<string>("Draft");
-  
+
 
   const [formData, setFormData] = useState<IRequestData>({
     DepartmentId: 0,
@@ -55,11 +55,11 @@ const SupplyRequestForm = (props: any) => {
       loadEditData(Number(id));
     }
   }, [id, itemData]);
-  
-//   useEffect(() => {
-//   console.log("ROLE:", role, "STATUS:", status);
-// }, [role, status]);
-  
+
+  //   useEffect(() => {
+  //   console.log("ROLE:", role, "STATUS:", status);
+  // }, [role, status]);
+
 
   const loadData = async () => {
     try {
@@ -110,14 +110,21 @@ const SupplyRequestForm = (props: any) => {
     }
   };
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: Number(value)
-    });
-  };
+const handleChange = (e: any) => {
+  const { name, value } = e.target;
+
+  setFormData({
+    ...formData,
+    [name]:
+      name === "DepartmentId" ||
+      name === "CategoryNameId" ||
+      name === "ItemNameId"
+        ? Number(value)
+        : value
+  });
+};
+
 
   const handleCategoryChange = (e: any) => {
     const categoryId = Number(e.target.value);
@@ -134,7 +141,7 @@ const SupplyRequestForm = (props: any) => {
       ItemNameId: 0
     });
   };
-  
+
   const focusWithError = (element: any) => {
     setTimeout(() => {
       if (element) {
@@ -165,7 +172,7 @@ const SupplyRequestForm = (props: any) => {
       focusWithError(itemRef.current);
       return;
     }
-     
+
 
     try {
 
@@ -186,7 +193,7 @@ const SupplyRequestForm = (props: any) => {
       } else {
         await sp.web.lists
           .getByTitle("OfficeSupplyRequestList")
-          .items.add({EmployeeNameId: currentUserId, DepartmentId: Number(formData.DepartmentId), CategoryNameId: Number(formData.CategoryNameId),ItemNameId: Number(formData.ItemNameId),RequestDate: formData.RequestDate, Comments: formData.Comments, Status: newStatus});
+          .items.add({ EmployeeNameId: currentUserId, DepartmentId: Number(formData.DepartmentId), CategoryNameId: Number(formData.CategoryNameId), ItemNameId: Number(formData.ItemNameId), RequestDate: formData.RequestDate, Comments: formData.Comments, Status: newStatus });
 
         showSuccess("Saved Successfully");
       }
@@ -200,12 +207,19 @@ const SupplyRequestForm = (props: any) => {
 
   const handleApproveReject = async (newStatus: string) => {
     try {
-      await sp.web.lists .getByTitle("OfficeSupplyRequestList") .items.getById(Number(id)).update({ Status: newStatus });      
-      alert(`Request ${newStatus}`);
+      await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.getById(Number(id)).update({ Status: newStatus });
+      if (newStatus === "Approved") {
+        showSuccess("Request is Approved.");        
+      } else if(newStatus === "Rejected"){
+        showError("Request is Rejected.");
+        
+      }
+
       navigate("/supply-request-list");
 
     } catch (error) {
       console.log(error);
+      showError("Something went wrong");
     }
   };
 
@@ -214,97 +228,209 @@ const SupplyRequestForm = (props: any) => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    // <div style={{ padding: "20px" }}>
 
-      <h2>{id ? "Edit Request" : "New Request"}</h2>
+    //   <h2>{id ? "Edit Request" : "New Request"}</h2>
 
-      <label>Employee Name</label><br />
-      <input type="text" value={currentUser} readOnly /><br /><br />
+    //   <label>Employee Name</label><br />
+    //   <input type="text" value={currentUser} readOnly /><br /><br />
 
-      <label>Department</label><br />
-      <select name="DepartmentId" value={formData.DepartmentId} onChange={handleChange} ref={deptRef}>
-        <option value={0}>Select Department</option>
-        {departmentData.map((item) => (
-          <option key={item.Id} value={item.Id}>{item.Name}</option>
-        ))}
-      </select><br /><br />
+    //   <label>Department</label><br />
+    //   <select name="DepartmentId" value={formData.DepartmentId} onChange={handleChange} ref={deptRef}>
+    //     <option value={0}>Select Department</option>
+    //     {departmentData.map((item) => (
+    //       <option key={item.Id} value={item.Id}>{item.Name}</option>
+    //     ))}
+    //   </select><br /><br />
 
-      <label>Category</label><br />
-      <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleCategoryChange} ref={categoryRef}>
-        <option value={0}>Select Category</option>
-        {categoryData.map((item) => (
-          <option key={item.Id} value={item.Id}>{item.CategoryName}</option>
-        ))}
-      </select><br /><br />
+    //   <label>Category</label><br />
+    //   <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleCategoryChange} ref={categoryRef}>
+    //     <option value={0}>Select Category</option>
+    //     {categoryData.map((item) => (
+    //       <option key={item.Id} value={item.Id}>{item.CategoryName}</option>
+    //     ))}
+    //   </select><br /><br />
 
-      <label>Item Name</label><br />
-      <select name="ItemNameId" value={formData.ItemNameId} onChange={handleChange} ref={itemRef}>
-        <option value={0}>Select Item</option>
-        {filteredItems.map((item) => (
-          <option key={item.Id} value={item.Id}>{item.ItemName}</option>
-        ))}
-      </select><br /><br />
+    //   <label>Item Name</label><br />
+    //   <select name="ItemNameId" value={formData.ItemNameId} onChange={handleChange} ref={itemRef}>
+    //     <option value={0}>Select Item</option>
+    //     {filteredItems.map((item) => (
+    //       <option key={item.Id} value={item.Id}>{item.ItemName}</option>
+    //     ))}
+    //   </select><br /><br />
 
-      <label>Request Date</label><br />
-      <input type="date" value={formData.RequestDate} readOnly /><br /><br />
+    //   <label>Request Date</label><br />
+    //   <input type="date" value={formData.RequestDate} readOnly /><br /><br />
 
-      <label>Comments</label><br />
-      <textarea
-        rows={4}
-        cols={40}
-        name="Comments"
-        value={formData.Comments}
-        onChange={handleChange}
-      /><br /><br />
-
-  
-      {status === "Draft" && (
-        <>
-          <button onClick={() => handleSave("Draft")}>Save</button>
-
-          <button
-            onClick={() => handleSave("Submitted")}
-            style={{ marginLeft: "10px" }}
-          >
-            Submit
-          </button>
-        </>
-      )}
-
-   
-      {status === "Submitted" && role === "Staff" && (
-        <button onClick={() => handleSave("Submitted")}>
-          Update
-        </button>
-      )}
-
-      {status === "Submitted" && role === "Admin" && (
-        <>
-          <button onClick={() => handleApproveReject("Approved")}>
-            Approve
-          </button>
-
-          <button
-            onClick={() => handleApproveReject("Rejected")}
-            style={{ marginLeft: "10px" }}
-          >
-            Reject
-          </button>
-        </>
-      )}
+    //   <label>Comments</label><br />
+    //   <textarea
+    //     rows={4}
+    //     cols={40}
+    //     name="Comments"
+    //     value={formData.Comments}
+    //     onChange={handleChange}
+    //   /><br /><br />
 
 
-      {status === "Rejected" && (
-        <button onClick={() => handleSave("Submitted")}>
-          Resubmit
-        </button>
-      )}
+    //   {status === "Draft" && (
+    //     <>
+    //       <button onClick={() => handleSave("Draft")}>Save</button>
 
-   
-      <button onClick={handleCancel} style={{ marginLeft: "10px" }}>
-        Cancel
-      </button>
+    //       <button
+    //         onClick={() => handleSave("Submitted")}
+    //         style={{ marginLeft: "10px" }}
+    //       >
+    //         Submit
+    //       </button>
+    //     </>
+    //   )}
 
+
+    //   {status === "Submitted" && role === "Staff" && (
+    //     <button onClick={() => handleSave("Submitted")}>
+    //       Update
+    //     </button>
+    //   )}
+
+    //   {status === "Submitted" && role === "Admin" && (
+    //     <>
+    //       <button onClick={() => handleApproveReject("Approved")}>
+    //         Approve
+    //       </button>
+
+    //       <button
+    //         onClick={() => handleApproveReject("Rejected")}
+    //         style={{ marginLeft: "10px" }}
+    //       >
+    //         Reject
+    //       </button>
+    //     </>
+    //   )}
+
+
+    //   {status === "Rejected" && (
+    //     <button onClick={() => handleSave("Submitted")}>
+    //       Resubmit
+    //     </button>
+    //   )}
+
+
+    //   <button onClick={handleCancel} style={{ marginLeft: "10px" }}>
+    //     Cancel
+    //   </button>
+
+
+    // </div>
+    <div className="request-container">
+
+      <div className="request-header">
+        <h2>{id ? "Edit Supply Request" : "New Supply Request"}</h2>
+      </div>
+
+      <div className="request-body">
+
+        {/* Employee */}
+        <div className="employee-box">
+          <label>Employee Name</label>
+          <input type="text" value={currentUser} readOnly />
+        </div>
+        <div className="form-row">
+          <div>
+            <label>Department <span className="required">*</span></label>
+            <select name="DepartmentId" value={formData.DepartmentId} onChange={handleChange} ref={deptRef}>
+              <option value={0}>Select Department</option>
+              {departmentData.map((item) => (
+                <option key={item.Id} value={item.Id}>{item.Name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Category <span className="required">*</span></label>
+
+            <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleCategoryChange} ref={categoryRef}>
+              <option value={0}>Select Category</option>
+              {categoryData.map((item) => (
+                <option key={item.Id} value={item.Id}>{item.CategoryName}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label>Item Name <span className="required">*</span></label>
+
+            <select name="ItemNameId" value={formData.ItemNameId} onChange={handleChange} ref={itemRef}>
+              <option value={0}>Select Item</option>
+              {filteredItems.map((item) => (
+                <option key={item.Id} value={item.Id}>{item.ItemName}</option>
+              ))}
+            </select>
+          </div>
+
+        </div>
+
+        <div className="form-row-two">
+          <div>
+            <label>Request Date</label>
+
+            <input type="date" value={formData.RequestDate} readOnly />
+          </div>
+
+          <div>
+            <label>Comments</label>
+
+            <textarea
+              rows={4}
+              cols={40}
+              name="Comments"
+              value={formData.Comments}
+              onChange={handleChange}
+              placeholder="Add any notes or remarks..."
+            />
+          </div>
+
+        </div>
+
+        <div className="button-section">
+
+          {status === "Draft" && (
+            <>
+              <button className="btn" onClick={handleCancel}>Cancel</button>
+
+              <button className="btn btn-primary" onClick={() => handleSave("Draft")}>Save Draft</button>
+
+              <button className="btn btn-success" onClick={() => handleSave("Submitted")}>Submit</button>
+            </>
+          )}
+          {status === "Submitted" && role === "Staff" && (
+            <>
+              <button className="btn" onClick={handleCancel}>Cancel</button>
+
+              <button className="btn btn-primary" onClick={() => handleSave("Submitted")}>Update</button>
+            </>
+          )}
+
+          {status === "Submitted" && role === "Admin" && (
+            <>
+              <button className="btn" onClick={handleCancel}>Cancel</button>
+              <button className="btn btn-success" onClick={() => handleApproveReject("Approved")}>Approve</button>
+              <button className="btn btn-danger" onClick={() => handleApproveReject("Rejected")} >Reject</button>
+            </>
+          )}
+          {status === "Rejected" && (
+            <>
+              <button className="btn" onClick={handleCancel}>Cancel</button>
+              <button className="btn btn-warning" onClick={() => handleSave("Submitted")}>Resubmit</button>
+            </>
+          )}
+
+          {/* Approved */}
+          {status === "Approved" && (
+            <button className="btn" onClick={handleCancel}>Close</button>
+          )}
+
+        </div>
+
+      </div>
 
     </div>
   );

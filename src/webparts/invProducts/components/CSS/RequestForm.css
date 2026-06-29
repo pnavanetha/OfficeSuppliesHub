@@ -1,70 +1,165 @@
-.form-container {
-  padding: 20px;
-  background: #f5f6fa;
+/* Page */
+.request-container {
+    max-width: 850px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.12);
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
 }
 
-.form-header {
-  background: #4b57a3;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  margin-bottom: 20px;
-  border-radius: 4px;
+/* Header */
+.request-header {
+    background: #243c66;
+    color: #fff;
+    padding: 20px 25px;
 }
 
-/* Grid layout */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.request-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
 }
 
-/* Each field */
-.form-group {
-  display: flex;
-  flex-direction: column;
+.request-header p {
+    margin-top: 5px;
+    color: #d8dce8;
+    font-size: 15px;
 }
 
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 5px;
+/* Body */
+.request-body {
+    padding: 25px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 6px;
-  border: none;
-  border-bottom: 1px solid #aaa;
-  background: transparent;
-  outline: none;
+/* Labels */
+.request-body label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
 }
 
-/* Full width (comments) */
-.full-width {
-  grid-column: span 3;
+.required {
+    color: red;
+}
+
+/* Input Fields */
+
+.request-body input,
+.request-body select,
+.request-body textarea {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    padding: 0 12px;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    transition: .2s;
+}
+
+.request-body textarea {
+    height: 42px;
+    resize: none;
+    padding-top: 10px;
+}
+
+.request-body input:focus,
+.request-body select:focus,
+.request-body textarea:focus {
+    border-color: #1d4ed8;
+}
+
+/* Employee Name */
+
+.employee-box {
+    margin-bottom: 20px;
+}
+
+/* Grid */
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.form-row-two {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
 }
 
 /* Buttons */
-.button-group {
-  margin-top: 20px;
+
+.button-section {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
 }
 
-.button-group button {
-  margin-right: 10px;
-  padding: 6px 12px;
-  background-color: #4b57a3;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 3px;
+.btn {
+    min-width: 120px;
+    height: 42px;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all .3s;
 }
 
-.button-group button:hover {
-  background-color: #3c468d;
+.btn:hover {
+    transform: translateY(-1px);
 }
 
-/* Error highlight */
-.input-error {
-  border-bottom: 2px solid red !important;
+/* Save Draft */
+.btn-primary {
+    background: #243c66;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1b2f51;
+}
+
+/* Submit / Approve */
+.btn-success {
+    background: #198754;
+    color: #fff;
+    border: none;
+}
+
+.btn-success:hover {
+    background: #157347;
+}
+
+/* Reject */
+.btn-danger {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #bb2d3b;
+}
+
+/* Resubmit */
+.btn-warning {
+    background: #fd7e14;
+    color: #fff;
+    border: none;
+}
+
+.btn-warning:hover {
+    background: #e96b00;
 }
