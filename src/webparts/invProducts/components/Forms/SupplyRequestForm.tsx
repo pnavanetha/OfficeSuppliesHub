@@ -339,7 +339,9 @@ const handleChange = (e: any) => {
             <label>Department <span className="required">*</span></label>
             <select name="DepartmentId" value={formData.DepartmentId} onChange={handleChange} ref={deptRef}>
               <option value={0}>Select Department</option>
-              {departmentData.map((item) => (
+              {departmentData
+              .sort((a,b) => a.Name.localeCompare(b.Name))
+              .map((item) => (
                 <option key={item.Id} value={item.Id}>{item.Name}</option>
               ))}
             </select>
@@ -349,7 +351,8 @@ const handleChange = (e: any) => {
 
             <select name="CategoryNameId" value={formData.CategoryNameId} onChange={handleCategoryChange} ref={categoryRef}>
               <option value={0}>Select Category</option>
-              {categoryData.map((item) => (
+              {categoryData
+                .map((item) => (
                 <option key={item.Id} value={item.Id}>{item.CategoryName}</option>
               ))}
             </select>
@@ -360,7 +363,8 @@ const handleChange = (e: any) => {
 
             <select name="ItemNameId" value={formData.ItemNameId} onChange={handleChange} ref={itemRef}>
               <option value={0}>Select Item</option>
-              {filteredItems.map((item) => (
+              {filteredItems
+              .map((item) => (
                 <option key={item.Id} value={item.Id}>{item.ItemName}</option>
               ))}
             </select>
@@ -373,6 +377,7 @@ const handleChange = (e: any) => {
             <label>Request Date</label>
 
             <input type="date" value={formData.RequestDate} readOnly />
+            <span className="calendar-icon">📅</span>
           </div>
 
           <div>

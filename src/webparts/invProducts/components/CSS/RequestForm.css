@@ -163,3 +163,7 @@
 .btn-warning:hover {
     background: #e96b00;
 }
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  display: block;
+  cursor: pointer;
+}
