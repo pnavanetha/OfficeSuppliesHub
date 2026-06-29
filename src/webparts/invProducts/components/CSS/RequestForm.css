@@ -1,0 +1,70 @@
+.form-container {
+  padding: 20px;
+  background: #f5f6fa;
+}
+
+.form-header {
+  background: #4b57a3;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+/* Grid layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Each field */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 6px;
+  border: none;
+  border-bottom: 1px solid #aaa;
+  background: transparent;
+  outline: none;
+}
+
+/* Full width (comments) */
+.full-width {
+  grid-column: span 3;
+}
+
+/* Buttons */
+.button-group {
+  margin-top: 20px;
+}
+
+.button-group button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  background-color: #4b57a3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.button-group button:hover {
+  background-color: #3c468d;
+}
+
+/* Error highlight */
+.input-error {
+  border-bottom: 2px solid red !important;
+}

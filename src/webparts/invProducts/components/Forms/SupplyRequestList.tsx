@@ -7,8 +7,6 @@ import "@pnp/sp/items";
 import { useNavigate } from "react-router-dom";
 import { formatDateIN } from "../Common/dateHelpers";
 
-
-
 const SupplyRequestList = (props: any) => {
 
 
@@ -21,17 +19,36 @@ const SupplyRequestList = (props: any) => {
         loadData();
     }, []);
 
+
+    // const loadData = async () => {
+
+    //     try {
+    //         const res = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName")
+    //             .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
+    //         setData(res);
+
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
     const loadData = async () => {
-
         try {
-            const res = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName")
-                .expand("EmployeeName", "Department", "CategoryName", "ItemName")();
-            setData(res);
-
+            const currentUser = await sp. web. currentUser();
+            let items;
+            if (props.role === "Admin"){
+                items = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName").expand("EmployeeName", "Department", "CategoryName", "ItemName")();
+            } else {
+                items = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName").expand("EmployeeName", "Department", "CategoryName", "ItemName").filter(`EmployeeNameId eq ${currentUser.Id}`)();
+            }
+            setData(items);
+            console.log("User ID:", currentUser.Id);
+            
         } catch (error) {
             console.log(error);
+            
         }
-    };
+    }
 
     const addRequest = () => {
         navigate("/SupplyRequestForm");
