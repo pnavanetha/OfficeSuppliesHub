@@ -6,7 +6,7 @@ import "../CSS/Dashboard.css";
 import { formatDateIN } from "../Common/dateHelpers";
 import CommonGrid from "../Common/CommonGrid";
 import { IColumn } from "@fluentui/react";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit,FiClipboard,FiClock,FiUser } from "react-icons/fi";
 
 const AdminDashboard = (props: any) => {
 
@@ -104,17 +104,20 @@ return (
 
     <div className="dashboard-cards">
       <div className="dashboard-card" onClick={() => loadData("All")}>
+        <FiClipboard className="card-icon" />
         {/* <span className="card-count">{tableData.length}</span> */}
         <span className="card-count">All Request</span>
         {/* <span className="card-title">All Requests</span> */}
       </div>
 
       <div className="dashboard-card" onClick={() => loadData("Pending")}>
+         <FiClock className="card-icon" />
         <span className="card-count">Pending Requests</span>
         {/* <span className="card-title">Pending Requests</span> */}
       </div>
 
       <div className="dashboard-card" onClick={() => loadData("My")}>
+        <FiUser className="card-icon" />
         <span className="card-count">My Requests</span>
         {/* <span className="card-title">My Requests</span> */}
       </div>
