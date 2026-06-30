@@ -1,7 +1,16 @@
 import * as React from "react";
 import { useState } from "react";
-import { DetailsList, IColumn, SelectionMode, TextField } from "@fluentui/react";
+import {
+  DetailsList,
+  IColumn,
+  SelectionMode,
+  TextField,
+  DetailsListLayoutMode,
+  ConstrainMode,
+  IconButton
+} from "@fluentui/react";
 import "./CommonGrid.css";
+
 
 interface CommonGridProps {
   items: any[];
@@ -17,31 +26,30 @@ const CommonGrid: React.FC<CommonGridProps> = ({
   searchFields = []
 }) => {
 
+
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortColumn, setSortColumn] = useState<string>("");
-  const [isSortedDescending, setIsSortedDescending] = useState<boolean>(true);
+  const [sortColumn, setSortColumn] = useState("");
+  const [isSortedDescending, setIsSortedDescending] = useState(false);
 
-  // ✅ Filtering
-  const filteredData = items.filter((item: any) =>
+  // Filter
+  const filteredData = items.filter((item) =>
     searchFields.length === 0
       ? true
-      : searchFields.some((field: string) =>
-        item[field]
-          ?.toString()
+      : searchFields.some((field) =>
+        String(item[field] ?? "")
           .toLowerCase()
-          .includes(searchText.toLowerCase())
+          .indexOf(searchText.toLowerCase()) !== -1
       )
   );
 
-  // ✅ Sorting (AFTER filtering)
+  // Sort
   const sortedData = [...filteredData];
 
   if (sortColumn) {
-    sortedData.sort((a: any, b: any) => {
-
-      const first = a[sortColumn]?.toString().toLowerCase() || "";
-      const second = b[sortColumn]?.toString().toLowerCase() || "";
+    sortedData.sort((a, b) => {
+      const first = String(a[sortColumn] ?? "").toLowerCase();
+      const second = String(b[sortColumn] ?? "").toLowerCase();
 
       if (first < second) return isSortedDescending ? 1 : -1;
       if (first > second) return isSortedDescending ? -1 : 1;
@@ -49,32 +57,29 @@ const CommonGrid: React.FC<CommonGridProps> = ({
     });
   }
 
-  // ✅ Column Click (ONLY set state)
   const onColumnClick = (
     ev?: React.MouseEvent<HTMLElement>,
     column?: IColumn
-  ): void => {
+  ) => {
 
     if (!column?.fieldName) return;
 
-    const desc =
+    setSortColumn(column.fieldName);
+
+    setIsSortedDescending(
       sortColumn === column.fieldName
         ? !isSortedDescending
-        : false;
-
-    setSortColumn(column.fieldName);
-    setIsSortedDescending(desc);
+        : false
+    );
   };
 
-  // ✅ Attach sorting to columns
   const updatedColumns = columns.map((col) => ({
     ...col,
     isSorted: sortColumn === col.fieldName,
-    isSortedDescending: isSortedDescending,
+    isSortedDescending,
     onColumnClick
   }));
 
-  // ✅ Pagination (AFTER sorting)
   const totalPages = Math.ceil(sortedData.length / pageSize);
 
   const pagedData = sortedData.slice(
@@ -86,27 +91,71 @@ const CommonGrid: React.FC<CommonGridProps> = ({
     <div>
 
       <div className="search-container">
-        <TextField
-          placeholder="Search..."
-          value={searchText}
-          onChange={(_, value) => {
-            setSearchText(value || "");
-            setCurrentPage(1);
-          }}
-        />
+        <div className="search-box">
+          <TextField
+            placeholder="Search..."
+            value={searchText}
+            onChange={(_, value) => {
+              setSearchText(value || "");
+              setCurrentPage(1);
+            }}
+          />
+
+          {searchText && (
+            <IconButton
+              className="clear-btn"
+              iconProps={{ iconName: "Cancel" }}
+              onClick={() => {
+                setSearchText("");
+                setCurrentPage(1);
+              }}
+            />
+          )}
+        </div>
       </div>
 
-      {/* 📊 Grid */}
       <div className="grid-section">
-        <DetailsList
-          items={pagedData}
-          columns={updatedColumns}
-          selectionMode={SelectionMode.none}
-        />
+
+        {filteredData.length > 0 ? (
+
+          <DetailsList
+            items={pagedData}
+            columns={updatedColumns}
+            selectionMode={SelectionMode.none}
+            layoutMode={DetailsListLayoutMode.justified}
+            constrainMode={ConstrainMode.horizontalConstrained}
+          />
+
+        ) : (
+
+          <>
+            <div className="empty-header">
+              {updatedColumns.map((col) => (
+                <div
+                  key={col.key}
+                  className="empty-header-cell"
+                  style={{ minWidth: col.minWidth }}
+                >
+                  {col.name}
+                </div>
+              ))}
+            </div>
+
+            <div className="empty-state">
+              <div className="empty-icon">📭</div>
+              <div className="empty-title">
+                No records found
+              </div>
+            </div>
+
+          </>
+
+        )}
+
       </div>
 
-      {/* 📄 Pagination */}
       <div className="pagination">
+
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
@@ -115,7 +164,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         </button>
 
         <span>
-          Page {currentPage} of {totalPages}
+          Page {totalPages === 0 ? 0 : currentPage} of {totalPages}
         </span>
 
         <button
@@ -124,11 +173,11 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         >
           Next
         </button>
+
       </div>
 
     </div>
   );
-
 };
 
 export default CommonGrid;

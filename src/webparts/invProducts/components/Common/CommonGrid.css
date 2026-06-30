@@ -1,43 +1,126 @@
-/* ✅ CommonGrid.css */
+/* Search */
 
 .search-container {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 
 .search-container .ms-TextField {
-    width: 200px;
+    width: 220px;
 }
 
+/* Grid */
+
 .grid-section {
+    background: #fff;
     border: 1px solid #e5e5e5;
+    border-radius: 8px;
 }
+
+/* Fluent UI */
+
+.ms-DetailsHeader {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.ms-DetailsRow {
+    min-height: 44px;
+}
+
+.ms-DetailsRow:hover {
+    background: #f7f9fb;
+}
+
+/* Empty Grid */
+
+.empty-header {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    background: #faf9f8;
+    border-bottom: 1px solid #e5e5e5;
+    font-weight: 600;
+}
+
+.empty-header-cell {
+    flex: 1;
+    padding: 0 12px;
+    white-space: nowrap;
+}
+
+.empty-state {
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.empty-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Pagination */
 
 .pagination {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 15px;
-    margin-top: 15px;
+    margin-top: 16px;
 }
 
 .pagination button {
-    padding: 6px 15px;
-    border: 1px solid #ccc;
-    background: white;
+    padding: 6px 16px;
+    border: 1px solid #d1d1d1;
+    background: #fff;
     cursor: pointer;
 }
 
+.pagination button:hover:not(:disabled) {
+    background: #f3f3f3;
+}
+
 .pagination button:disabled {
-    opacity: 0.5;
+    opacity: .5;
     cursor: not-allowed;
 }
-
-/* Fluent UI Overrides */
-.ms-DetailsHeader {
-    background: #f3f2f1;
+/* Search Container */
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
-.ms-DetailsRow:hover {
-    background: #f8f8f8;
+/* Search Box */
+.search-box {
+    position: relative;
+    width: 220px;
+}
+
+.search-box .ms-TextField {
+    width: 100%;
+}
+
+/* Clear Button */
+.clear-btn {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: transparent;
+}
+
+.clear-btn:hover {
+    background: transparent;
 }

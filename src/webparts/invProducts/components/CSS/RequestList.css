@@ -1,0 +1,19 @@
+.list-content{
+    padding:25px;
+    background:#f4f7fb;
+    min-height:100vh;
+}
+.list-header{
+    background:#0f4c5c;
+    color:#fff;
+    padding:18px 25px;
+    border-radius:8px;
+    margin-bottom:25px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.list-header h2{
+    margin:0;
+    font-size:28px;
+    font-weight:600;
+}

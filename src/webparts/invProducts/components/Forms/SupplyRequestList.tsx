@@ -6,6 +6,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { useNavigate } from "react-router-dom";
 import { formatDateIN } from "../Common/dateHelpers";
+import "../CSS/RequestList.css";
 
 const SupplyRequestList = (props: any) => {
 
@@ -77,16 +78,10 @@ const SupplyRequestList = (props: any) => {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="list-content">
 
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "20px"
-                }}
-            >
-                <h2>Office Supply Requests</h2>
+            <div className="list-header">
+            <h2>Office Supply Requests</h2>
 
                 <button onClick={addRequest}>
                     + Add Request

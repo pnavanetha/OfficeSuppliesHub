@@ -377,7 +377,7 @@ const handleChange = (e: any) => {
             <label>Request Date</label>
 
             <input type="date" value={formData.RequestDate} readOnly />
-            <span className="calendar-icon">📅</span>
+
           </div>
 
           <div>

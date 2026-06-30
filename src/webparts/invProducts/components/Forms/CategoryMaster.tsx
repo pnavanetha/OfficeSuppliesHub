@@ -122,7 +122,7 @@ const CategoryMaster = (props: any) => {
       key: "category", name: "Category Name", fieldName: "CategoryName", minWidth: 250
     },
     {
-      key: "active", name: "Active", fieldName: "IsActive", minWidth: 100,
+      key: "active", name: "IsActive", fieldName: "IsActive", minWidth: 100,
       onRender: (item: any) =>
         item.IsActive ? "Yes" : "No"
     }
@@ -185,7 +185,7 @@ const CategoryMaster = (props: any) => {
           items={data}
           columns={columns}
           pageSize={10}
-          searchFields={["CategoryName"]}
+          searchFields={["CategoryName", "Active"]}
         />
       </div>
 
