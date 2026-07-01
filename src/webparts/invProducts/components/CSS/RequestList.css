@@ -3,17 +3,57 @@
     background:#f4f7fb;
     min-height:100vh;
 }
+
 .list-header{
-    background:#0f4c5c;
-    color:#fff;
-    padding:18px 25px;
-    border-radius:8px;
-    margin-bottom:25px;
-    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    background: #eef4f8;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .list-header h2{
-    margin:0;
-    font-size:28px;
+    margin: 0;
+    background: #1f5a6d;
+    color: #fff;
+    padding: 18px 28px;
+    border-radius: 10px;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+/* Action Bar */
+.action-bar{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* Add Button */
+.add-request-btn{
+    background:#0f4c5c;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:12px 22px;
+    min-width:170px;
+    font-size:16px;
     font-weight:600;
+    cursor:pointer;
+    transition:0.3s ease;
+    box-shadow:0 4px 10px rgba(15,76,92,.2);
+}
+
+.add-request-btn:hover{
+    background:#136678;
+    transform:translateY(-2px);
+}
+
+/* Grid */
+.grid-container{
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
 }

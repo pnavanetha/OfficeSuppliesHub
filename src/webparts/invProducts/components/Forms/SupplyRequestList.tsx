@@ -7,6 +7,10 @@ import "@pnp/sp/items";
 import { useNavigate } from "react-router-dom";
 import { formatDateIN } from "../Common/dateHelpers";
 import "../CSS/RequestList.css";
+import { IColumn } from "@fluentui/react";
+import CommonGrid from "../Common/CommonGrid";
+
+
 
 const SupplyRequestList = (props: any) => {
 
@@ -35,19 +39,19 @@ const SupplyRequestList = (props: any) => {
 
     const loadData = async () => {
         try {
-            const currentUser = await sp. web. currentUser();
+            const currentUser = await sp.web.currentUser();
             let items;
-            if (props.role === "Admin"){
+            if (props.role === "Admin") {
                 items = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName").expand("EmployeeName", "Department", "CategoryName", "ItemName")();
             } else {
                 items = await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.select("Id", "RequestDate", "Comments", "Status", "EmployeeName/Title", "Department/Name", "CategoryName/CategoryName", "ItemName/ItemName").expand("EmployeeName", "Department", "CategoryName", "ItemName").filter(`EmployeeNameId eq ${currentUser.Id}`)();
             }
             setData(items);
             console.log("User ID:", currentUser.Id);
-            
+
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 
@@ -57,108 +61,87 @@ const SupplyRequestList = (props: any) => {
     const editRequest = (id: number): void => {
         navigate(`/SupplyRequestForm/${id}`);
     };
-    const deleteRequest = async (id: number) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this request?"
-        );
+    // const deleteRequest = async (id: number) => {
+    //     const confirmDelete = window.confirm(
+    //         "Are you sure you want to delete this request?"
+    //     );
 
-        if (!confirmDelete) {
-            return;
-        }
+    //     if (!confirmDelete) {
+    //         return;
+    //     }
 
-        try {
+    //     try {
 
-            await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.getById(id).delete();
-            alert("Deleted Successfully");
-            loadData();
+    //         await sp.web.lists.getByTitle("OfficeSupplyRequestList").items.getById(id).delete();
+    //         alert("Deleted Successfully");
+    //         loadData();
 
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    const columns: IColumn[] = [
+        {
+            key: "Edit", name: "Edit", minWidth: 70, onRender: (item: any) => (
+                <button onClick={() => editRequest(item.ID)}>Edit</button>
+            )
+        },
+        // {
+        //     key: "Delete", name: "Delete", minWidth: 70, onRender: (item: any) => (
+        //         <button onClick={() => deleteRequest(item.ID)}>Delete</button>
+        //     )
+        // },
+        // { key: "ID", name: "ID", fieldName: "ID", minWidth: 60, isResizable: true },
+        { key: "Employee", name: "Employee Name", fieldName: "Employee", minWidth: 150, isResizable: true },
+        { key: "Department", name: "Department", fieldName: "Department", minWidth: 120, isResizable: true },
+        { key: "Category", name: "Category", fieldName: "Category", minWidth: 120, isResizable: true },
+        { key: "Item", name: "Item", fieldName: "Item", minWidth: 120, isResizable: true },
+        { key: "Request", name: "Request Date", fieldName: "Request", minWidth: 120, isResizable: true },
+        { key: "Status", name: "Status", fieldName: "Status", minWidth: 100, isResizable: true },
+        { key: "Comments", name: "Comments", fieldName: "Comments", minWidth: 150, isResizable: true },
+
+    ]
 
     return (
         <div className="list-content">
 
             <div className="list-header">
-            <h2>Office Supply Requests</h2>
+                <h2>Office Supply Requests</h2> <br />
+            </div>
 
-                <button onClick={addRequest}>
+            <div className="action-bar">
+                <button className="add-request-btn" onClick={addRequest}>
                     + Add Request
                 </button>
             </div>
 
-            <table
-                style={{
-                    width: "100%",
-                    borderCollapse: "collapse"
-                }}
-            >
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Employee Name</th>
-                        <th>Department</th>
-                        <th>Category</th>
-                        <th>Item Name</th>
-                        <th>Request Date</th>
-                        <th>Comments</th>
-                        <th>Status</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    {
-                        data.length > 0 ?
-
-                            data.map((item: any) => (
-
-                                <tr key={item.Id}>
-                                    <td>{item.Id}</td>
-                                    <td>{item.EmployeeName?.Title}</td>
-                                    <td>{item.Department?.Name}</td>
-                                    <td>{item.CategoryName?.CategoryName}</td>
-                                    <td>{item.ItemName?.ItemName}</td>
-                                    <td>{formatDateIN (item.RequestDate) }</td>
-
-                                    <td>
-                                        {/* {new Date(item.RequestDate).toLocaleDateString("en-US", {
-                                            timeZone: "Asia/Kolkata"
-                                        })} */}
-                                        {/* {new Date(item.RequestDate).toLocaleDateString("en-IN")} */}
-
-                                    </td>
-
-                                    <td>{item.Comments}</td>
-                                    <td>{item.Status}</td>
-                                    <td>
-                                        <button onClick={() => editRequest(item.Id)}>Edit</button>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => deleteRequest(item.Id)}>Delete</button>
-                                    </td>
-                                </tr>
-
-                            ))
-                            :
-                            <tr>
-                                <td
-                                    colSpan={10}
-                                    style={{
-                                        textAlign: "center"
-                                    }}
-                                >
-                                    No Records Found
-                                </td>
-                            </tr>
-                    }
-
-                </tbody>
-
-            </table>
+            <div className="grid-container">
+                <CommonGrid
+                    items={data.map((item) => ({
+                        ID: item.Id,
+                        Employee: item.EmployeeName?.Title || "",
+                        Department: item.Department?.Name || "",
+                        Category: item.CategoryName?.CategoryName || "",
+                        Item: item.ItemName?.ItemName || "",
+                        Request: formatDateIN(item.RequestDate),
+                        Comments: item.Comments || "",
+                        Status: item.Status || ""
+                    }))}
+                    columns={columns}
+                    pageSize={10}
+                    searchFields={[
+                        "ID",
+                        "Employee",
+                        "Department",
+                        "Category",
+                        "Item",
+                        "Request",
+                        "Comments",
+                        "Status"
+                    ]}
+                />
+            </div>
 
         </div>
     );
